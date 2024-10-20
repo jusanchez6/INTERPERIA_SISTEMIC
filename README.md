@@ -9,44 +9,54 @@ Para el uso del firmware es necesario de la versión de pyhton 3.10.12. Para ins
 sudo apt update
 ```
 
-Instalar las dependencias necesarias:
+**Instalar las dependencias necesarias:**
 ```bash
 sudo apt install software-properties-common
 ```
 
-Agregar el PPA de `deadsnakes`:
+**Agregar el PPA de `deadsnakes`:**
 ```bash
 sudo add-repository ppa:deadsnakes/ppa
 ```
 
-Actualizar la lista de paquetes nuevamente:
+**Actualizar la lista de paquetes nuevamente:**
 ```bash
 sudo apt update
 ```
 
-Instalación de Python 3.10:
+**Instalación de Python 3.10:**
 ```bash
 sudo apt install python3.10
 ```
 
-Finaliza la instalación verificando la versión con el siguiente comando: 
+**Finaliza la instalación verificando la versión con el siguiente comando:** 
 ```bash
 python3.10 --version
 ```
 
 Luego de la instalación de Python3.10 es necesario crear el ambiente virtual, mediante el comando:
 
-En primer lugar se debe instalar el paquete de entorno virtual de python3.10 (si no está instalado)
+**En primer lugar se debe instalar el paquete de entorno virtual de python3.10** (si no está instalado)
 ```bash
 sudo apt install python3.10-venv
 ```
 
-Luego de la instalación se puede ejecutar el comando:
+**Luego de la instalación se puede ejecutar el comando:**
 ```bash
 python3.10 -m venv [myenv]
 ```
 
 `[myenv]` puede ser reemplazado por el nombre del entorno virtual que se elija. 
+
+Para finalizar la preparación del ambiente virtual es necesario instalar las librerias mediante el uso de los siguientes comandos
+
+```bash
+source [myenv]/bin/activate
+
+pip install -r requirements.txt
+```
+
+## MODELOS DE IMAGEN Y AUDIO. 
 
 
 
