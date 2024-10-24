@@ -1,8 +1,3 @@
-// Toma muchas fotos y solo guarda la ultima
-
-
-/**
-
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
@@ -15,6 +10,13 @@
 using namespace cv;
 using namespace std;
 
+
+// Toma muchas fotos y solo guarda la ultima
+// Comenta esta parte para usar el modo de captura unica
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/**
 const int FRAME_RATE = 23; // Tasa de fotogramas deseada
 
 int main(int argc, char** argv)
@@ -78,24 +80,12 @@ int main(int argc, char** argv)
 
  */
 
-
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 // Toma solo un frame y lo guarda en un archivo
-
-
-
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <iostream>
-#include <string>
-#include <chrono>
-#include <thread>
-
-using namespace cv;
-using namespace std;
+// Comenta esta parte para usar el modo de captura continua
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv)
 {
@@ -140,3 +130,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -6,7 +6,7 @@ import torch
 import json
 from datetime import datetime
 import pytz
-from image_processing import split_image, calculate_entropy, calculate_complexity, discard_images
+from image_processing import split_image, calculate_entropy, calculate_complexity, discard_images, extract_and_save_frame
 
 #-----------------------------------------
 # Variables de entrada
@@ -26,40 +26,14 @@ def run_terminal_command(command):
     Args:
         command (str): Comando a ejecutar.
     """
-    try:
+    try:-
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         #print(result.stdout.decode())
     except subprocess.CalledProcessError as e:
         print(f"Error al ejecutar el comando: {e.stderr.decode()}")
 
 
-def extract_and_save_frame(video_path, output_image_path):
-    """
-    Extrae el primer frame de un video .mp4 y lo guarda como un archivo .png.
 
-    Args:
-        video_path (str): Ruta del archivo de video .mp4.
-        output_image_path (str): Ruta donde se guardará el frame extraído como archivo .png.
-    """
-    # Leer el video
-    reader = imageio.get_reader(video_path, 'ffmpeg')
-    
-    try:
-        # Extraer el primer frame
-        frame = reader.get_data(0)
-        
-        # Convertir el frame a una imagen PIL
-        image = Image.fromarray(frame)
-        
-        # Guardar la imagen
-        image.save(output_image_path)
-        
-        #print(f"Frame guardado exitosamente en {output_image_path}")
-    except Exception as e:
-        print(f"Error al extraer el frame: {e}")
-    finally:
-        # Cerrar el lector
-        reader.close()
 
 
 def test_model(model, image_directory, image_original_path, output_directory, split_width, classes):
@@ -152,19 +126,24 @@ command = "./mipi /dev/video50"
 #---------------------------------------------
 # Ejecutando el terminal
 
+# Captura solo un fotograma de nombr: single_frame.jpg
 run_terminal_comand(command)
+
 
 #---------------------------------------------
 
 #---------------------------------------------
 # Desde un video
+# Extraer y guardar el primer frame de un video
 video_path = "output_test.mp4"
 output_image_path = "image_test.png"
 
 extract_and_save_frame(video_path, output_image_path)
+
+
 #---------------------------------------------
 # Inferencia del modelo
-file = "imahge_test2.png"
+file = "single_frame.jpg"
 split_image(file, image_directory, split_width, overlap_percentage)
 discard_images(image_directory, 7.0, 0.40)
 
@@ -172,3 +151,5 @@ model = torch.load(path_model, map_location=torch.device('cpu'))
 r = test_model(model, images_directory, output_image_path, output_directory, split_width, classes)
 
 print(r)
+
+#---------------------------------------------

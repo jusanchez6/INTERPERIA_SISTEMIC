@@ -1,3 +1,21 @@
+"""
+Este script contiene funciones para procesar archivos de audio.
+
+Funciones:
+- prepare_audio: Prepara el audio para el procesamiento.
+- extract_features: Extrae características de un archivo de audio usando la librería de librosa.
+
+
+authosr: Felipe Ayala
+        Julian Sanchez
+
+date: 2024-10-24
+
+version: 1.0
+
+SISTEMIC 2024
+"""
+
 import os
 import numpy as np
 from scipy.io.wavfile import read, write
@@ -6,15 +24,13 @@ import librosa
 
 def prepare_audio(path):
     """
-    Prepare audio by resampling and amplifying it.
+    Prepara el audio para el procesamiento.
     
     Args:
-    - path (str): Path to the audio file.
+    - path (str): ruta del audio.
     """
     # Leer el archivo de audio original
     original_sample_rate, audio_data = read(path)
-    #print("ORIGINAL SAMPLE RATE")
-    #print(original_sample_rate)
 
     # Definir la nueva tasa de muestreo deseada
     nueva_tasa_muestreo = 22050  #22.05 kHz
@@ -36,7 +52,7 @@ def prepare_audio(path):
 
 def extract_features(file_name, Nmfcc, Nfft, NhopL, NwinL):
     """
-    Extract features using librosa library (Mel-frequency cepstral coefficients).
+    Extrer características de un archivo de audio usando la libreria de librosa.
     
     Args:
     - file_name (str): Path to the audio file.

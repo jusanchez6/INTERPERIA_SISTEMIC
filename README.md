@@ -107,7 +107,7 @@ lopencv_imgcodecs -lopencv_highgui -std=c++11 -std=gnu++11 -Wall -std=c++11 -
 lstdc++ -I/usr/include/opencv4
 ```
 
-*Aunque en el repositorio se adjuntan los archivos compilados, se recomienda compilarlos para la verificación de las librerias instaladas y del correcto funcionamiento del script.*
+*Aunque en el repositorio se adjuntan los archivos compilados, se recomienda compilarlos para la verificación de las librerias instaladas y del correcto funcionamiento del script, ademas de la selección del modo de toma (multitoma, toma única)*
 
 Una vez obtenidos los ejecutables, desde el terminal se puede ejecutar el siguiente comando, el cual mostrará el funcionamiento de la cámara:
 
@@ -115,4 +115,116 @@ Una vez obtenidos los ejecutables, desde el terminal se puede ejecutar el siguie
 ./mipi /dev/video50"
 ```
 
+Este comando dependiendo del modo de funcionamiento seleccionado puede tomar varias imagenes a una tasa de 23 fps o podrá tomar una sola imagen y guardarla, a continuación se muestra los dos codigos:
+
+
+1. **MODO MULTITOMA**
+```bash
+const int FRAME_RATE = 23; // Tasa de fotogramas deseada
+
+int main(int argc, char** argv)
+{
+    if (argc != 2) {
+        cerr << "Uso: " << argv[0] << " <dispositivo>" << endl;
+        cerr << "Ejemplo: " << argv[0] << " /dev/video0" << endl;
+        return -1;
+    }
+
+    string str = argv[1];
+
+    string gstformat = "NV12";
+    string gstfile = "v4l2src device=" + str + " ! video/x-raw,format=" + gstformat + ",width=1920,height=1080,framerate=30/1 ! videoconvert ! appsink";
+    VideoCapture capture(gstfile);
+
+    if (!capture.isOpened()) {
+        cerr << "Error al abrir la c�mara." << endl;
+        return -1;
+    }
+
+    cout << "Iniciando captura a " << FRAME_RATE << " FPS. Presione Ctrl+C para detener." << endl;
+
+    int frame_count = 0;
+    auto frame_duration = std::chrono::milliseconds(1000 / FRAME_RATE);
+
+    while (true) {
+        auto start_time = std::chrono::high_resolution_clock::now();
+        
+        Mat frame;
+        capture >> frame;
+
+        if (frame.empty()) {
+            cerr << "No se pudo capturar el frame." << endl;
+            continue;
+        }
+
+        string filename = "current_frame.jpg";
+        bool success = imwrite(filename, frame);
+
+        if (success) {
+            cout << "Frame guardado como " << filename << endl;
+            frame_count++;
+        } else {
+            cerr << "Error al guardar el frame." << endl;
+            break;
+        }
+
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        
+        // Esperar el tiempo restante para alcanzar la tasa de fotogramas deseada
+        if (elapsed_time < frame_duration) {
+            std::this_thread::sleep_for(frame_duration - elapsed_time);
+        }
+    }
+
+    capture.release();
+    return 0;
+}
+```
+
+2. ** MODO TOMA UNICA. **
+```bash
+int main(int argc, char** argv)
+{
+    if (argc != 2) {
+        cerr << "Uso: " << argv[0] << " <dispositivo>" << endl;
+        cerr << "Ejemplo: " << argv[0] << " /dev/video0" << endl;
+        return -1;
+    }
+
+    string str = argv[1];
+
+    // Configuración de GStreamer
+    string gstformat = "NV12";
+    string gstfile = "v4l2src device=" + str + " ! video/x-raw,format=" + gstformat + ",width=1920,height=1080,framerate=30/1 ! videoconvert ! appsink";
+    VideoCapture capture(gstfile);
+
+    if (!capture.isOpened()) {
+        cerr << "Error al abrir la cámara." << endl;
+        return -1;
+    }
+
+    cout << "Capturando un frame. Presione Ctrl+C para detener." << endl;
+
+    Mat frame;
+    capture >> frame;  // Captura un único frame
+
+    if (frame.empty()) {
+        cerr << "No se pudo capturar el frame." << endl;
+        return -1;
+    }
+
+    string filename = "single_frame.jpg";
+    bool success = imwrite(filename, frame);  // Guarda el frame
+
+    if (success) {
+        cout << "Frame guardado como " << filename << endl;
+    } else {
+        cerr << "Error al guardar el frame." << endl;
+    }
+
+    capture.release();  // Libera la captura
+    return 0;
+}
+```
 
