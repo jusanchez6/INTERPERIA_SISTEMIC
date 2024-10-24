@@ -79,7 +79,12 @@ print("a: ",a)
 
 
 ```
-Por Algún motivo Felipe, puso funciones que también funcionan para el procesamiento del audio (y más adelante verás que también para el procesamiento de imagene) en archivos separados, lo que dificulta el entendimiento del codigo pues hay que estar moviendose entre archivos, la función de grabar audio puede incluirse ahi, pero es mejor echarle un ojo antes a que las librerias que se usen sean las mismas. 
+Por Algún motivo Felipe, puso funciones que también se utilizan para el procesamiento del audio (y más adelante verás que también para el procesamiento de imagene) en archivos separados, lo que dificulta el entendimiento del codigo, pues hay que estar moviendose entre archivos, la función de grabar audio puede incluirse ahi, pero es mejor echarle un ojo antes a que las librerias que se usen sean las mismas. 
+
+Al ejecutar el siguiente comando, se podrá ver el funcionamiento del script de prueba:
+```bash
+python3.10 test_model_audio.py
+```
 
 ### Modelo de Imagen
 

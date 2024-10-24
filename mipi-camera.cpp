@@ -1,3 +1,8 @@
+// Toma muchas fotos y solo guarda la ultima
+
+
+/**
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
@@ -27,7 +32,7 @@ int main(int argc, char** argv)
     VideoCapture capture(gstfile);
 
     if (!capture.isOpened()) {
-        cerr << "Error al abrir la c�mara." << endl;
+        cerr << "Error al abrir la c�mara." << endl;
         return -1;
     }
 
@@ -70,3 +75,68 @@ int main(int argc, char** argv)
     capture.release();
     return 0;
 }
+
+ */
+
+
+
+
+// Toma solo un frame y lo guarda en un archivo
+
+
+
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <iostream>
+#include <string>
+#include <chrono>
+#include <thread>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    if (argc != 2) {
+        cerr << "Uso: " << argv[0] << " <dispositivo>" << endl;
+        cerr << "Ejemplo: " << argv[0] << " /dev/video0" << endl;
+        return -1;
+    }
+
+    string str = argv[1];
+
+    // Configuración de GStreamer
+    string gstformat = "NV12";
+    string gstfile = "v4l2src device=" + str + " ! video/x-raw,format=" + gstformat + ",width=1920,height=1080,framerate=30/1 ! videoconvert ! appsink";
+    VideoCapture capture(gstfile);
+
+    if (!capture.isOpened()) {
+        cerr << "Error al abrir la cámara." << endl;
+        return -1;
+    }
+
+    cout << "Capturando un frame. Presione Ctrl+C para detener." << endl;
+
+    Mat frame;
+    capture >> frame;  // Captura un único frame
+
+    if (frame.empty()) {
+        cerr << "No se pudo capturar el frame." << endl;
+        return -1;
+    }
+
+    string filename = "single_frame.jpg";
+    bool success = imwrite(filename, frame);  // Guarda el frame
+
+    if (success) {
+        cout << "Frame guardado como " << filename << endl;
+    } else {
+        cerr << "Error al guardar el frame." << endl;
+    }
+
+    capture.release();  // Libera la captura
+    return 0;
+}
+
