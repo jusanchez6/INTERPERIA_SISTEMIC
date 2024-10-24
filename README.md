@@ -57,6 +57,57 @@ pip install -r requirements.txt
 ```
 
 ## MODELOS DE IMAGEN Y AUDIO. 
+### MODELO DE AUDIO
+Para la red de Audio, en la carpeta se encuentra el archivo ```test_model_audio.py``` el cual contiene un ejemplo de uso de la red. Entre las funciones principales se encuentran:
++ ```grabar_audio```: Obtiene un audio de 4 seunfos y lo guarda como "mi_grabacion.wav"
++ ```ind_predict_ARQ4_TL```: Realiza la inferencia de un modelo de detección de eventos de audio
 
+El ejemplo de uso presentado en el archivo se muestra a continuación:
+```bash
+
+print(f"\n\n----------------------Processing  ---------------------")
+
+# Prepare audio file
+grabar_audio(duracion=4, nombre_archivo="mi_grabacion.wav")
+audio_file="scream_test.wav"
+prepare_audio(audio_file)
+
+print("----------------------Predicción Con Audio de prueba---------------------")
+a=ind_predict_ARQ4_TL(audio_file, input3, output3, interpreter3)
+
+print("a: ",a)
+
+
+```
+Por Algún motivo Felipe, puso funciones que también funcionan para el procesamiento del audio (y más adelante verás que también para el procesamiento de imagene) en archivos separados, lo que dificulta el entendimiento del codigo pues hay que estar moviendose entre archivos, la función de grabar audio puede incluirse ahi, pero es mejor echarle un ojo antes a que las librerias que se usen sean las mismas. 
+
+### Modelo de Imagen
+
+
+
+Para el modelo de imagen la camara requiere de una configuración previa, con el entorno virtual activado, lo primero será ejecutar los siguientes dos comandos:
+
+```bash
+sudo apt update
+sudo apt install gstreamer-aml
+```
+
+El gstreamer es el programa encargado de crear el pipeline necesario para la captura de imahgenes, aunque hay documentación del uso de python con open CV **la implementación no fue posible.** Dentro de los archivos presentes en este repositorio se encontrara con los siguientes archivos: ```mipi.c```, ```mipi_stream.c``` y sus respectivos ejecutables. 
+
+Estos archivos corresponden a los scripts que permiten el control de la cámara. Para la compilación de los archivos en C, se ejecuta el siguiente comando:
+
+```bash
+gcc -o mipi mipi-camera.cpp -lopencv_imgproc -lopencv_core -lopencv_videoio -
+lopencv_imgcodecs -lopencv_highgui -std=c++11 -std=gnu++11 -Wall -std=c++11 -
+lstdc++ -I/usr/include/opencv4
+```
+
+*Aunque en el repositorio se adjuntan los archivos compilados, se recomienda compilarlos para la verificación de las librerias instaladas y del correcto funcionamiento del script.*
+
+Una vez obtenidos los ejecutables, desde el terminal se puede ejecutar el siguiente comando, el cual mostrará el funcionamiento de la cámara:
+
+```bash
+./mipi /dev/video50"
+```
 
 
