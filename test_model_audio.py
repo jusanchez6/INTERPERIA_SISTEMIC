@@ -30,6 +30,20 @@ from vgg_model import ModifiedVGG16Model, FusionVGG16Model
 
 
 def ind_predict_ARQ4_TL(path, inputM, outputM, interpreterM):
+    """
+    Realiza la inferencia de un modelo de detección de eventos de audio
+
+    Args:   
+        path (str): Ruta del archivo de audio a procesar
+        inputM (dict): Información del input del modelo
+        outputM (dict): Información del output del modelo
+        interpreterM (tf.lite.Interpreter): Modelo de TensorFlow Lite
+
+    returns: 
+        JSON con la detección del evento
+    """
+
+
     # Parámetros del procesamiento de audio
     samplerate = 22050
     longitudMaxAudio = 4
@@ -94,6 +108,18 @@ def ind_predict_ARQ4_TL(path, inputM, outputM, interpreterM):
 
 
 def grabar_audio(duracion=4, nombre_archivo="grabacion.wav", tasa_muestreo=44100, canales=1):
+    """
+    Graba audio de 4 segunfos y lo guarda en un archivo WAV
+
+    Args:
+        duracion (float): Duración de la grabación en segundos
+        nombre_archivo (str): Nombre del archivo WAV
+        tasa_muestreo (int): Tasa de muestreo en Hz
+        canales (int): Número de canales
+
+    Returns:
+        None
+    """
     print(f"Grabando {duracion} segundos...")
     myrecording = sd.rec(int(duracion * tasa_muestreo), samplerate=tasa_muestreo, channels=canales)
     sd.wait()  # Esperar hasta que la grabación se complete

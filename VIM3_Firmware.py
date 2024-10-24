@@ -258,9 +258,9 @@ def second_thread(q):
 
 
 
-    ## CAMBIAR POR OPENCV 
+    ## CAMBIAR POR OPENCV y YOLOv8 
     ## PREGUNTAR A RICARDO
-    ##
+    ## -----------------------------
 
     #waiting for model files to test
     model = torch.load(path_model, map_location=torch.device('cpu'))

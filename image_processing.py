@@ -1,10 +1,28 @@
 from PIL import Image
 import os
-def start_points(size, split_size, overlap=0):
+def start_points(size, split_size, overlap=0):\
+    """Genera los puntos de inicio para dividir una imagen en partes más pequeñas.
+    Args:
+        size (int): Tamaño de la imagen.
+        split_size (int): Tamaño de la división.
+        overlap (float): Porcentaje de superposición entre divisiones.
+    Returns:
+        range: Puntos de inicio.
+    """
+
     stride = int(split_size * (1 - overlap))
     return range(0, size, stride)
 
 def split_image(file, output_directory, split_width, overlap_percentage):
+    """Divide una imagen en partes más pequeñas,  no retorna nada, guarda la
+        imagen recortada en output_directory.
+    Args:
+        file (str): Ruta de la imagen.
+        output_directory (str): Directorio de salida.
+        split_width (int): Ancho de las divisiones.
+        overlap_percentage (float): Porcentaje de superposición entre divisiones.
+
+    """
     img = Image.open(file)
     img_w, img_h = img.size
     X_points = start_points(img_w, split_width, overlap_percentage)
@@ -25,14 +43,28 @@ import os
 import glob
 
 def calculate_entropy(image):
-    """Calcula la entropía de una imagen"""
+    """Calcula la entropía de una imagen
+    
+    Args:
+        image (PIL.Image): Imagen a procesar.
+
+    Returns:
+        float: Entropía de la imagen.
+    """
     histogram = image.histogram()
     histogram_length = sum(histogram)
     samples_probability = [float(h) / histogram_length for h in histogram]
     return -sum([p * np.log2(p + 1e-7) for p in samples_probability if p != 0])
 
 def calculate_complexity(image):
-    """Calcula el índice de complejidad de una imagen"""
+    """Calcula el índice de complejidad de una imagen
+
+    Args:
+        image (PIL.Image): Imagen a procesar.
+
+    Returns:
+        float: Índice de complejidad de la imagen.
+    """
     # Convertir la imagen a escala de grises
     gray_image = image.convert('L')
     # Calcular el gradiente de la imagen utilizando el operador Sobel
@@ -41,7 +73,13 @@ def calculate_complexity(image):
     return (gradient_x + gradient_y) / image.size[0] / image.size[1]
 
 def discard_images(dataset_path, entropy_threshold, complexity_threshold):
-    """Descarta imágenes que caen por debajo de los umbrales de entropía y complejidad"""
+    """Descarta imágenes que caen por debajo de los umbrales de entropía y complejidad
+    
+    Args:
+        dataset_path (str): Directorio con las imágenes a procesar.
+        entropy_threshold (float): Umbral de entropía.
+        complexity_threshold (float): Umbral de complejidad.
+    """
     files = glob.glob(f"{dataset_path}/*.png")
     i = 0
     for filename in files:
