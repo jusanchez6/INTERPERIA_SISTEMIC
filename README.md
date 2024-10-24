@@ -119,6 +119,7 @@ Este comando dependiendo del modo de funcionamiento seleccionado puede tomar var
 
 
 1. **MODO MULTITOMA**
+
 ```bash
 const int FRAME_RATE = 23; // Tasa de fotogramas deseada
 
@@ -180,9 +181,12 @@ int main(int argc, char** argv)
     capture.release();
     return 0;
 }
+
+
 ```
 
-2. ** MODO TOMA UNICA. **
+2. **MODO TOMA UNICA.**
+
 ```bash
 int main(int argc, char** argv)
 {
@@ -226,5 +230,6 @@ int main(int argc, char** argv)
     capture.release();  // Libera la captura
     return 0;
 }
+
 ```
 
