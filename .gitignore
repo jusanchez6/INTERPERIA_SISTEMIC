@@ -3,7 +3,14 @@ __pycache__
 myenv/
 images_cropped/
 output_images/
+model_Vgg16_60_weapons/
 
 #Archives
 model_Vgg16_60_weapons.zip
 single_frame.jpg
+
+# type of files
+*.png
+*.jpg
+*.jpeg
+*.wav

@@ -29,7 +29,7 @@ import numpy as np
 import os
 import glob
 
-def start_points(size, split_size, overlap=0):\
+def start_points(size, split_size, overlap=0):
     """Genera los puntos de inicio para dividir una imagen en partes más pequeñas.
     Args:
         size (int): Tamaño de la imagen.
@@ -38,7 +38,6 @@ def start_points(size, split_size, overlap=0):\
     Returns:
         range: Puntos de inicio.
     """
-
     stride = int(split_size * (1 - overlap))
     return range(0, size, stride)
 
@@ -61,8 +60,10 @@ def split_image(file, output_directory, split_width, overlap_percentage):
         for x_point in X_points:
             img_cropped = img.crop(box=(x_point, y_point, x_point + split_width, y_point + split_width))
             name_image = f"{x_point}_{y_point}.png"
+            
+            # Si el directorio de salida no existe, se crea
+            os.makedirs(output_directory, exist_ok=True)
             img_cropped.save(os.path.join(output_directory, name_image))
-            #print(f"Image saved: {name_image}")
     print("images saved")
 
 
@@ -114,6 +115,7 @@ def discard_images(dataset_path, entropy_threshold, complexity_threshold):
         complexity = calculate_complexity(image)
         #print(entropy, complexity)
         if entropy < entropy_threshold or complexity < complexity_threshold:
+            # Si el directorio 'discard' no existe, se crea
             os.makedirs(f"{dataset_path}/discard", exist_ok=True)
             os.rename(f"{dataset_path}/{file}", f"{dataset_path}/discard/{file}")
             i = i + 1
@@ -121,7 +123,7 @@ def discard_images(dataset_path, entropy_threshold, complexity_threshold):
     #print(i)
 
 
-    def extract_and_save_frame(video_path, output_image_path):
+def extract_and_save_frame(video_path, output_image_path):
     """
     Extrae el primer frame de un video .mp4 y lo guarda como un archivo .png.
 

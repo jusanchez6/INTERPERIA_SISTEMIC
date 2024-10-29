@@ -26,7 +26,7 @@ def run_terminal_command(command):
     Args:
         command (str): Comando a ejecutar.
     """
-    try:-
+    try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         #print(result.stdout.decode())
     except subprocess.CalledProcessError as e:
@@ -127,7 +127,7 @@ command = "./mipi /dev/video50"
 # Ejecutando el terminal
 
 # Captura solo un fotograma de nombr: single_frame.jpg
-run_terminal_comand(command)
+# run_terminal_command(command)
 
 
 #---------------------------------------------
@@ -135,21 +135,22 @@ run_terminal_comand(command)
 #---------------------------------------------
 # Desde un video
 # Extraer y guardar el primer frame de un video
-video_path = "output_test.mp4"
-output_image_path = "image_test.png"
+# video_path = "output_test.mp4"
+# output_image_path = "image_test.png"
 
-extract_and_save_frame(video_path, output_image_path)
+# extract_and_save_frame(video_path, output_image_path)
 
 
 #---------------------------------------------
 # Inferencia del modelo
 file = "single_frame.jpg"
-split_image(file, image_directory, split_width, overlap_percentage)
-discard_images(image_directory, 7.0, 0.40)
+
+split_image(file, images_directory, split_width, overlap_percentage)
+discard_images(images_directory, 7.0, 0.40)
 
 model = torch.load(path_model, map_location=torch.device('cpu'))
 r = test_model(model, images_directory, output_image_path, output_directory, split_width, classes)
 
-print(r)
+print("r: ", r)
 
 #---------------------------------------------
