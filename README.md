@@ -243,6 +243,6 @@ Para utilzar un modo o el otro basta con comentar el código no deseado y ejecut
 - [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
 - [ ] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
 - [ ] Organizar la documentacion de los docstrings para que la reconozca dpoxygen
-- [ ] no se
+- [ ] Conectar el quectel 4G
 
 
