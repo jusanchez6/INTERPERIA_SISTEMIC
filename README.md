@@ -237,4 +237,12 @@ int main(int argc, char** argv)
 ```
 Para utilzar un modo o el otro basta con comentar el código no deseado y ejecutar el comando de compilación y ejecución mostrados previamente. 
 
-**EL TUTORIAL LLEGA HASTA ACA DADO QUE NO SE ENCUENTRA EL MODELO DE INFERENCIA DE LAS IMAGENES      **
+**EL TUTORIAL LLEGA HASTA ACA DADO QUE NO SE ENCUENTRA EL MODELO DE INFERENCIA DE LAS IMAGENES**
+
+# TAREAS PENDIENTES 
+- [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
+- [ ] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
+- [ ] Organizar la documentacion de los docstrings para que la reconozca dpoxygen
+- [ ] no se
+
+
