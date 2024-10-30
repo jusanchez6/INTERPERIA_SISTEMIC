@@ -2,16 +2,45 @@
 
 Este tutorial tiene como intención el guiar en la preparación del ambiente virtual y puesta en marcha de los diferente modelos implementados en el proyecto desde cero, asi como la actualización del firmware y posibles mejoras realizadas. 
 
-## Instalacion de la imagen de Ubuntu
+## Instalación de la imagen de Ubuntu
+Para la instalación del sistema operativo en la **Khadas Vim3** lo primero es tener a la mano una memoria SD, un adaptador USB y dirigirse a la siguiente página: https://dl.khadas.com/products/vim3/firmware/oowow/. Aquí encontrará la imagen del asistente para la instalación del sistema operativo, una vez descargado el archivo, copielo en la memoria SD e introduzca esta memoria en la Vim3.
 
-Para la instalación del sistema operativo en la **Khadas Vim3** lo primero es tener a la mano una memoria sd, un adaptador usb y dirigirse la siguiente pagina: https://dl.khadas.com/products/vim3/firmware/oowow/ Aquí encontrará la imagen del asistente para la instalación del sistema operativo, una vez descargado el archivo, copielo en la memoria sd e introduzca esta memoria en la vim3
+No siempre es necesario, pero si se inserta la memoria SD y no va directamente al asistente de instalación, se debe poner en Upgrade mode, para esto es necesario mantener presionado el botón de POWER en la VIM3 mientras se presiona de manera corta el botón de Reset y se suelta, se debe mantener el botón de POWER presionado otros 2-3 segundos.
 
-Al encender la Vim3, vera como se encuentra en un asistente para la instalación del sistema operativo, siga los pasos de conectividad a internet y una vez tenga que elegir la imagen del sistema operativo que desea instalar, baje en el menú y elija `vim3-ubuntu-20.04-gnome-linux-5.15-fenix-1.6.9-240618.img.xz` Esta imagen corresponde a la versión 24.04 LTS de Ubuntu, y por el momento funciona de manera correcta con el hardware y software implementado. Para mas información sobre las imagenes de los sistemas operativos revise: https://docs.khadas.com/products/sbc/vim3/os-images/start
+Al encender la Vim3, verá como se encuentra en un asistente para la instalación del sistema operativo, siga los pasos de conectividad a internet y una vez tenga que elegir la imagen del sistema operativo que desea instalar, baje en el menú y elija `vim3-ubuntu-24.04-gnome-linux-5.15-fenix-1.6.9-240618.img.xz` Esta imagen corresponde a la versión 24.04 LTS de Ubuntu, y por el momento funciona de manera correcta con el hardware y software implementado. Para mas información sobre las imagenes de los sistemas operativos revise: https://docs.khadas.com/products/sbc/vim3/os-images/start
 
 Siga los pasos que le indique el asistente de instalación y una vez concluya extraiga la sd de la Vim3 y reinicie la tarjeta.
 
-## AMBIENTE VIRTUAL.
-Para el uso del firmware es necesario de la versión de pyhton 3.10.12. Para instalar Python 3.10 en Ubuntu, puedes utilizar el PPA de `deadsnakes`. Sigue estos pasos:
+## Repositorio de Github
+En primer lugar, es necesario descargar el repositorio de Github, sin embargo clonarlo no es suficiente, sino que se debe poder hacer pushs y pulls desde la Vim3, por lo que se configurará también para poder hacer esto.
+
+Para que todo esté actualizado:
+```bash
+sudo apt-get update
+```
+
+**Se revisa si ya se tiene `Github` instalado:**
+```bash
+git --version
+```
+**Si no se tiene instalado:**
+```bash
+sudo apt-get install git-all
+```
+**Como el repositorio es privado, se requiere primero conectarse a su cuenta de Github:**
+```bash
+git config --global user.name "Your Username"
+git config --global user.email "your_email@example.com"
+```
+
+
+**Clonar el repositorio del proyecto:**
+```bash
+git clone https://github.com/jusanchez6/INTERPERIA_SISTEMIC.git
+```
+
+## Ambiente Virtuals
+Para el uso del firmware es necesario de la versión de Python 3.10. Para instalar Python 3.10 en Ubuntu, puedes utilizar el PPA de `deadsnakes`. Sigue estos pasos y recuerda estar conectado a internet:
 
 ```bash
 sudo apt update
@@ -24,14 +53,14 @@ sudo apt install software-properties-common
 
 **Agregar el PPA de `deadsnakes`:**
 ```bash
-sudo add-repository ppa:deadsnakes/ppa
+sudo add-apt-repository ppa:deadsnakes/ppa
 ```
 
 **Actualizar la lista de paquetes nuevamente:**
 ```bash
 sudo apt update
 ```
-
+s
 **Instalación de Python 3.10:**
 ```bash
 sudo apt install python3.10
