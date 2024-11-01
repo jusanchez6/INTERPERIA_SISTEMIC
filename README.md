@@ -27,19 +27,66 @@ git --version
 ```bash
 sudo apt-get install git-all
 ```
+**Para configurar el acceso se requiere acceder a la página de Github por lo que se puede descargar:**
+```bash
+sudo snap install firefox
+```
+
 **Como el repositorio es privado, se requiere primero conectarse a su cuenta de Github:**
 ```bash
 git config --global user.name "Your Username"
 git config --global user.email "your_email@example.com"
 ```
 
+**Para validarse en Github hay dos métodos, por ssh o por Access token, se listan los dos para que cada quien elija.**
 
-**Clonar el repositorio del proyecto:**
+### Access Token
+- En la parte superior derecha de la página de Github, presionar su foto de perfil y presionar Settings.
+- De ahí, en el sidebar de la izquierda, ir a Developer Settings.
+- De nuevo, en el sidebar de la izquierda, presionar Tokens(Classic).
+- En la esquina derecha de la página, presionar Generate New Token.
+- Del listado, escoger Generate New Token (Classic), en Note escribir para qué se usa el token, escoger la fecha de vencimiento del token (Puede ser de 7 días) y escoger el scope del token, en este caso, sería repo.
+- Este debe generar un código que se copiará (si no se copia en ese momento es necesario eliminar el token y volver a intentar, ya que solo se muestra una vez) cuando se pida la contraseña al clonar el proyecto:
 ```bash
 git clone https://github.com/jusanchez6/INTERPERIA_SISTEMIC.git
 ```
+Si no se pide en este momento, lo pedirá cuando se haga el primer push, por lo que es bueno no perder el token.
 
-## Ambiente Virtuals
+### SSH
+**Generar clave ssh:**
+```bash
+ssh-keygen -o -t rsa -C “ssh@github.com”
+```
+Cuando se genera, este pide un passphrase que se debe recordar para el final de la operación.
+**Verificar nombre del archivo y ubicación correcta:**
+```bash
+khadas@Khadas cd ~/.ssh
+khadas@Khadas ls
+id_rsa id_rsa.pub
+```
+Puede aparecer con otro nombre, pero es bueno verificar, si esto no funciona, volver a intentar el primer paso.
+
+**Copiar la clave generada:**
+```bash
+cat id_rsa.pub
+```
+Copiar lo que saque el bash.
+
+**Crear clave en github:**
+- En la parte superior derecha de la página de Github, presionar su foto de perfil y presionar Settings.
+- De ahí, en el sidebar de la izquierda, ir a SSH and GPG keys.
+- En la esquina derecha de la página, presionar New SSH key.
+- Agregar un título, dejar el Key Type en Authentication Key y copiar la llave en Key.
+
+**Clonar con el ssh del repositorio:**
+```bash
+git clone git@github.com:jusanchez6/INTERPERIA_SISTEMIC.git
+```
+Aquí se pide el passphrase con el que se creó la llave ssh.
+
+Finalmente, así queda el repositorio listo para utilizar.
+
+## Ambiente Virtual
 Para el uso del firmware es necesario de la versión de Python 3.10. Para instalar Python 3.10 en Ubuntu, puedes utilizar el PPA de `deadsnakes`. Sigue estos pasos y recuerda estar conectado a internet:
 
 ```bash
@@ -60,7 +107,6 @@ sudo add-apt-repository ppa:deadsnakes/ppa
 ```bash
 sudo apt update
 ```
-s
 **Instalación de Python 3.10:**
 ```bash
 sudo apt install python3.10
@@ -89,8 +135,26 @@ Para finalizar la preparación del ambiente virtual es necesario instalar las li
 
 ```bash
 source [myenv]/bin/activate
-
 pip install -r requirements.txt
+```
+
+
+sudo apt-get install build-essential python3-dev libhdf5-dev
+pip install --upgrade pip setuptools wheel
+
+NO FUNCIONAN 
+
+## VS Code para VIM3
+Se descarga el `.deb` para ARM de la siguiente [página](https://code.visualstudio.com/download).
+
+**Instalar desde la carpeta donde se descargó el .deb:**
+```bash
+sudo dpkg -i ./nombre_del_archivo_descargado.deb
+```
+Si dice que no se tienen los `xdf-utils`:
+```bash
+sudo apt-get install xdf-utils
+sudo apt-get install -f
 ```
 
 ## MODELOS DE IMAGEN Y AUDIO. 
