@@ -2,6 +2,14 @@
 
 Este tutorial tiene como intención el guiar en la preparación del ambiente virtual y puesta en marcha de los diferente modelos implementados en el proyecto desde cero, asi como la actualización del firmware y posibles mejoras realizadas. 
 
+## Tabla de Contenidos
+1. [Instalación de la imagen de Ubuntu](#instalación-de-la-imagen-de-ubuntu)
+2. [Ambiente virtual de Python](#ambiente-virtual)
+3. [Modelos de imagen y audio](#modelos-de-imagen-y-audio)
+    - [Modelo de Audio](#modelo-de-audio)
+    - [Modelo de Imagen](#modelo-de-imagen)
+
+
 ## Instalación de la imagen de Ubuntu
 Para la instalación del sistema operativo en la **Khadas Vim3** lo primero es tener a la mano una memoria SD, un adaptador USB y dirigirse a la siguiente página: https://dl.khadas.com/products/vim3/firmware/oowow/. Aquí encontrará la imagen del asistente para la instalación del sistema operativo, una vez descargado el archivo, copielo en la memoria SD e introduzca esta memoria en la Vim3.
 
@@ -9,85 +17,11 @@ No siempre es necesario, pero si se inserta la memoria SD y no va directamente a
 
 Al encender la Vim3, verá como se encuentra en un asistente para la instalación del sistema operativo, siga los pasos de conectividad a internet y una vez tenga que elegir la imagen del sistema operativo que desea instalar, baje en el menú y elija `vim3-ubuntu-24.04-gnome-linux-5.15-fenix-1.6.9-240618.img.xz` Esta imagen corresponde a la versión 24.04 LTS de Ubuntu, y por el momento funciona de manera correcta con el hardware y software implementado. Para mas información sobre las imagenes de los sistemas operativos revise: https://docs.khadas.com/products/sbc/vim3/os-images/start
 
-Siga los pasos que le indique el asistente de instalación y una vez concluya extraiga la sd de la Vim3 y reinicie la tarjeta.
+Siga los pasos que le indique el asistente de instalación y una vez concluya extraiga la SD de la Vim3 y reinicie la tarjeta.
 
-## Repositorio de Github
-En primer lugar, es necesario descargar el repositorio de Github, sin embargo clonarlo no es suficiente, sino que se debe poder hacer pushs y pulls desde la Vim3, por lo que se configurará también para poder hacer esto.
-
-Para que todo esté actualizado:
-```bash
-sudo apt-get update
-```
-
-**Se revisa si ya se tiene `Github` instalado:**
-```bash
-git --version
-```
-**Si no se tiene instalado:**
-```bash
-sudo apt-get install git-all
-```
-**Para configurar el acceso se requiere acceder a la página de Github por lo que se puede descargar:**
-```bash
-sudo snap install firefox
-```
-
-**Como el repositorio es privado, se requiere primero conectarse a su cuenta de Github:**
-```bash
-git config --global user.name "Your Username"
-git config --global user.email "your_email@example.com"
-```
-
-**Para validarse en Github hay dos métodos, por ssh o por Access token, se listan los dos para que cada quien elija.**
-
-### Access Token
-- En la parte superior derecha de la página de Github, presionar su foto de perfil y presionar Settings.
-- De ahí, en el sidebar de la izquierda, ir a Developer Settings.
-- De nuevo, en el sidebar de la izquierda, presionar Tokens(Classic).
-- En la esquina derecha de la página, presionar Generate New Token.
-- Del listado, escoger Generate New Token (Classic), en Note escribir para qué se usa el token, escoger la fecha de vencimiento del token (Puede ser de 7 días) y escoger el scope del token, en este caso, sería repo.
-- Este debe generar un código que se copiará (si no se copia en ese momento es necesario eliminar el token y volver a intentar, ya que solo se muestra una vez) cuando se pida la contraseña al clonar el proyecto:
-```bash
-git clone https://github.com/jusanchez6/INTERPERIA_SISTEMIC.git
-```
-Si no se pide en este momento, lo pedirá cuando se haga el primer push, por lo que es bueno no perder el token.
-
-### SSH
-**Generar clave ssh:**
-```bash
-ssh-keygen -o -t rsa -C “ssh@github.com”
-```
-Cuando se genera, este pide un passphrase que se debe recordar para el final de la operación.
-**Verificar nombre del archivo y ubicación correcta:**
-```bash
-khadas@Khadas cd ~/.ssh
-khadas@Khadas ls
-id_rsa id_rsa.pub
-```
-Puede aparecer con otro nombre, pero es bueno verificar, si esto no funciona, volver a intentar el primer paso.
-
-**Copiar la clave generada:**
-```bash
-cat id_rsa.pub
-```
-Copiar lo que saque el bash.
-
-**Crear clave en github:**
-- En la parte superior derecha de la página de Github, presionar su foto de perfil y presionar Settings.
-- De ahí, en el sidebar de la izquierda, ir a SSH and GPG keys.
-- En la esquina derecha de la página, presionar New SSH key.
-- Agregar un título, dejar el Key Type en Authentication Key y copiar la llave en Key.
-
-**Clonar con el ssh del repositorio:**
-```bash
-git clone git@github.com:jusanchez6/INTERPERIA_SISTEMIC.git
-```
-Aquí se pide el passphrase con el que se creó la llave ssh.
-
-Finalmente, así queda el repositorio listo para utilizar.
 
 ## Ambiente Virtual
-Para el uso del firmware es necesario de la versión de Python 3.10. Para instalar Python 3.10 en Ubuntu, puedes utilizar el PPA de `deadsnakes`. Sigue estos pasos y recuerda estar conectado a internet:
+Se va a trabajar el ambiente virtual de Python en la carpeta de INTERPERIA SISTEMIC que se puede acceder por Github, para configurar esto, seguir lo descrito en la [documentación extra](./extras/extra_documentation.md#repositorio-de-github). Para el uso del firmware es necesario de la versión de Python 3.10.12. Para instalar Python 3.10.12 en Ubuntu, puedes utilizar el PPA de `deadsnakes`. Sigue estos pasos y recuerda estar conectado a internet:
 
 ```bash
 sudo apt update
@@ -116,10 +50,11 @@ sudo apt install python3.10
 ```bash
 python3.10 --version
 ```
+Es importante que si en esta parte no se muestra la versión 3.10.12, se siga lo explicado en la [documentación extra](./extras/extra_documentation.md#instalación-de-python-31012) para así tener la versión correcta.
 
-Luego de la instalación de Python3.10 es necesario crear el ambiente virtual, mediante el comando:
+Luego de la instalación de Python3.10.12 es necesario crear el ambiente virtual, mediante el comando:
 
-**En primer lugar se debe instalar el paquete de entorno virtual de python3.10** (si no está instalado)
+**En primer lugar se debe instalar el paquete de entorno virtual de python3.10**
 ```bash
 sudo apt install python3.10-venv
 ```
@@ -135,29 +70,17 @@ Para finalizar la preparación del ambiente virtual es necesario instalar las li
 
 ```bash
 source [myenv]/bin/activate
+sudo apt-get install build-essential python3-dev pkg-config libhdf5-dev
+```
+Si este segundo comando genera problemas, hacer un `sudo apt-get update` o un `sudo apt --fix-missing`. Se acaba el proceso con:
+
+```bash
+pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-
-sudo apt-get install build-essential python3-dev libhdf5-dev
-pip install --upgrade pip setuptools wheel
-
-NO FUNCIONAN 
-
-## VS Code para VIM3
-Se descarga el `.deb` para ARM de la siguiente [página](https://code.visualstudio.com/download).
-
-**Instalar desde la carpeta donde se descargó el .deb:**
-```bash
-sudo dpkg -i ./nombre_del_archivo_descargado.deb
-```
-Si dice que no se tienen los `xdf-utils`:
-```bash
-sudo apt-get install xdf-utils
-sudo apt-get install -f
-```
-
-## MODELOS DE IMAGEN Y AUDIO. 
+## MODELOS DE IMAGEN Y AUDIO
+Si se desea y su editor preferido es VS Code, se anexa un tutorial corto de su instalación en la [documentación extra](./extras/extra_documentation.md#vs-code-para-vim3).
 ### MODELO DE AUDIO
 Para la red de Audio, en la carpeta se encuentra el archivo ```test_model_audio.py``` el cual contiene un ejemplo de uso de la red. Entre las funciones principales se encuentran:
 + ```grabar_audio```: Obtiene un audio de 4 seunfos y lo guarda como "mi_grabacion.wav"
@@ -283,7 +206,7 @@ int main(int argc, char** argv)
 }
 ```
 
-2. ** MODO TOMA UNICA. **
+2. **MODO TOMA UNICA**
 ```c
 int main(int argc, char** argv)
 {
@@ -332,7 +255,7 @@ Para utilzar un modo o el otro basta con comentar el código no deseado y ejecut
 
 **EL TUTORIAL LLEGA HASTA ACA DADO QUE NO SE ENCUENTRA EL MODELO DE INFERENCIA DE LAS IMAGENES**
 
-# TAREAS PENDIENTES 
+## TAREAS PENDIENTES 
 - [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
 - [ ] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
 - [ ] Organizar la documentacion de los docstrings para que la reconozca dpoxygen
