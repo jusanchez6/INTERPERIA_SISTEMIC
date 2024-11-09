@@ -20,7 +20,7 @@ import subprocess
 import queue
 import signal
 # Import local functions
-from audio_processing import prepare_audio, extract_features
+from audio_model.audio_processing import prepare_audio, extract_features
 from storage_manager import ensure_storage_space, delete_old_files, save_audio
 from image_processing import split_image, calculate_entropy, calculate_complexity, discard_images
 from test_model import test_model
@@ -241,7 +241,6 @@ def main_thread(q):
     finally:
         # No hay configuración de GPIO para limpiar
         pass
-
 
 def second_thread(q):
     command = "./mipi /dev/video50"

@@ -6,6 +6,7 @@ En este archivo se guarda toda la información para configurar aspectos extra de
  1. [Repositorio de Github](#repositorio-de-github)
  2. [Instalación de Python 3.10.12](#instalación-de-python-31012)
  3. [VS Code para VIM3](#vs-code-para-vim3)
+ 4. [Configurar micrófono USB](#configurar-micrófono-usb-para-la-lectura)
 
 ## Repositorio de Github
 En primer lugar, es necesario descargar el repositorio de Github, sin embargo clonarlo no es suficiente, sino que se debe poder hacer pushs y pulls desde la Vim3, por lo que se configurará también para poder hacer esto.
@@ -124,3 +125,12 @@ sudo apt-get install xdf-utils
 sudo apt-get install -f
 ```
 Configurar VScode como se desee.
+
+## Configurar micrófono USB para la lectura
+Es posible que se tenga el "micrófono" del sistema como default para la recepción, por lo que si se conecta algún micrófono USB es bueno ponerlo como default.
+**Revisar conexión**
+```bash
+lsusb
+```
+Entre los puertos que se muestren tiene que estar el micrófono conectado, si no es así, revisar drivers o conexión física.
+Luego se selecciona como `default` abriendo la aplicación de `Settings` y expandiendo la opción de `Sound`, aquí, en la parte de `Input`, seleccionar en la lista expandible el micrófono que se conectó. Así, ya está listo para probar el código de Python.

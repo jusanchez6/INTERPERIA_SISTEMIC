@@ -81,31 +81,32 @@ pip install -r requirements.txt
 
 ## MODELOS DE IMAGEN Y AUDIO
 Si se desea y su editor preferido es VS Code, se anexa un tutorial corto de su instalación en la [documentación extra](./extras/extra_documentation.md#vs-code-para-vim3).
-### MODELO DE AUDIO
-Para la red de Audio, en la carpeta se encuentra el archivo ```test_model_audio.py``` el cual contiene un ejemplo de uso de la red. Entre las funciones principales se encuentran:
-+ ```grabar_audio```: Obtiene un audio de 4 seunfos y lo guarda como "mi_grabacion.wav"
-+ ```ind_predict_ARQ4_TL```: Realiza la inferencia de un modelo de detección de eventos de audio
 
+### MODELO DE AUDIO
+Para la red de Audio, en la carpeta se encuentra el archivo ```test_model_audio.py``` el cual contiene un ejemplo de uso de la red que usa un archivo de funciones llamado ```audio_processing.py```. Entre las funciones principales se encuentran:
++ ```grabar_audio```: Obtiene un audio de 4 segundos y lo guarda como "mi_grabacion.wav"
++ ```ind_predict_ARQ4_TL```: Realiza la inferencia de un modelo de detección de eventos de audio
++ ```prepare_audio```: Prepara el audio para el procesamiento
++ ```extract_features```: Extrae características de un archivo de audio usando la librería de librosa.
 El ejemplo de uso presentado en el archivo se muestra a continuación:
 ```bash
 
 print(f"\n\n----------------------Processing  ---------------------")
 
 # Prepare audio file
-grabar_audio(duracion=4, nombre_archivo="mi_grabacion.wav")
-audio_file="scream_test.wav"
+grabar_audio(duracion=4, nombre_archivo=filePathSave)
+
+#Comentar si se quiere probar con el archivo de prueba que esta en las variables por defecto
+audio_file=filePathSave
+
 prepare_audio(audio_file)
 
 print("----------------------Predicción Con Audio de prueba---------------------")
 a=ind_predict_ARQ4_TL(audio_file, input3, output3, interpreter3)
-
 print("a: ",a)
 
-
 ```
-Por Algún motivo Felipe, puso funciones que también se utilizan para el procesamiento del audio (y más adelante verás que también para el procesamiento de imagene) en archivos separados, lo que dificulta el entendimiento del codigo, pues hay que estar moviendose entre archivos, la función de grabar audio puede incluirse ahi, pero es mejor echarle un ojo antes a que las librerias que se usen sean las mismas. 
-
-Al ejecutar el siguiente comando, se podrá ver el funcionamiento del script de prueba:
+Para probarlo se puede hacer uso de un [micrófono USB](./extras/extra_documentation.md#configurar-micrófono-usb-para-la-lectura) para la entrada del audio si no se comenta la línea indicada, si no, se realiza con un audio que prueba incluído en la carpeta ```audio_model/sample_sounds```. Al ejecutar el siguiente comando, se podrá ver el funcionamiento del script de prueba:
 ```bash
 python3.10 test_model_audio.py
 ```
