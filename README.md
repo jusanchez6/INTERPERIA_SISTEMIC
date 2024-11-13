@@ -254,11 +254,21 @@ int main(int argc, char** argv)
 ```
 Para utilzar un modo o el otro basta con comentar el código no deseado y ejecutar el comando de compilación y ejecución mostrados previamente. 
 
-**EL TUTORIAL LLEGA HASTA ACA DADO QUE NO SE ENCUENTRA EL MODELO DE INFERENCIA DE LAS IMAGENES**
+En el archivom test_model se encuentra un script el cual prueba el modelo de inferencia de imagen de manera separada tal como se realizo con el modelo de audio. Para su ejecución es de vital importancia que el incluya las dos funciones del archivo `vgg_model.py` las cuales se incluyen mediant la linea de código
+```python
+from vgg_model import ModifiedVGG16Model, FusionVGG16Model
+
+``` 
+Estas funciones son las encargadas de darle el atributo de clase al modelo de inferencia `model_Vgg16_60_weapons` el cual se encuentra en el siguiente link y debe ser descargado por aparte debido a las limitaciones de github para la gestión de archivos de grandes tamaños: https://drive.google.com/drive/folders/1UnFmhoa4pKH0X_dmDjfiNESFYX2bcNOL 
+
+Para más información sobre el acceso al drive escriba al correo: fabian.duque@udea.edu.co
+
+
+
 
 ## TAREAS PENDIENTES 
 - [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
-- [ ] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
+- [x] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
 - [ ] Organizar la documentacion de los docstrings para que la reconozca dpoxygen
 - [ ] Conectar el quectel 4G
 
