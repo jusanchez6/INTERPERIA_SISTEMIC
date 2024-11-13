@@ -21,9 +21,6 @@ SISTEMIC 2024
 
 """
 
-
-
-
 from PIL import Image, ImageFilter
 import numpy as np
 import os
@@ -65,7 +62,6 @@ def split_image(file, output_directory, split_width, overlap_percentage):
             os.makedirs(output_directory, exist_ok=True)
             img_cropped.save(os.path.join(output_directory, name_image))
     print("images saved")
-
 
 def calculate_entropy(image):
     """Calcula la entropía de una imagen
@@ -121,7 +117,6 @@ def discard_images(dataset_path, entropy_threshold, complexity_threshold):
             i = i + 1
             #os.remove(os.path.join(dataset_path, filename))
     #print(i)
-
 
 def extract_and_save_frame(video_path, output_image_path):
     """

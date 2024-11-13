@@ -7,16 +7,17 @@ import json
 from datetime import datetime
 import pytz
 from image_processing import split_image, calculate_entropy, calculate_complexity, discard_images, extract_and_save_frame
+from vgg_model import ModifiedVGG16Model, FusionVGG16Model
 
 #-----------------------------------------
 # Variables de entrada
-images_directory = "./images_cropped"
+images_directory = "./images_cropped" 
+#revisar si se crea la carpeta si no existe
 output_directory = "./output_images"
 split_width = 256
 overlap_percentage = 0.6
 classes = ["arma de fuego", "no arma de fuego"]
 path_model = "model_Vgg16_60_weapons"
-
 
 
 def run_terminal_command(command):
@@ -31,9 +32,6 @@ def run_terminal_command(command):
         #print(result.stdout.decode())
     except subprocess.CalledProcessError as e:
         print(f"Error al ejecutar el comando: {e.stderr.decode()}")
-
-
-
 
 
 def test_model(model, image_directory, image_original_path, output_directory, split_width, classes):
@@ -151,6 +149,6 @@ discard_images(images_directory, 7.0, 0.40)
 model = torch.load(path_model, map_location=torch.device('cpu'))
 r = test_model(model, images_directory, output_image_path, output_directory, split_width, classes)
 
-print("r: ", r)
+print("r",r)
 
 #---------------------------------------------

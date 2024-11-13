@@ -1,3 +1,22 @@
+"""
+Este módulo se encarga de generar la clase del modelo modificado o con fusión. SE REQUIERE esta
+clase para la apertura del modelo.
+
+Clases:
+- ModifiedVGG16Model: Clase del modelo modificado.
+- FusionVGG16Model: Clase del modelo fusionado.
+
+authors: Felipe Ayala
+        Julian Sanchez
+        Maria del Mar Arbelaez
+
+date: 2024-10-24
+
+version: 1.0
+
+SISTEMIC 2024
+
+"""
 import torch
 import torch.nn as nn
 from torchvision import models
