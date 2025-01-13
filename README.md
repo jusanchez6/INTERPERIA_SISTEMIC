@@ -3,11 +3,14 @@
 Este tutorial tiene como intención el guiar en la preparación del ambiente virtual y puesta en marcha de los diferente modelos implementados en el proyecto desde cero, asi como la actualización del firmware y posibles mejoras realizadas. 
 
 ## Tabla de Contenidos
-1. [Instalación de la imagen de Ubuntu](#instalación-de-la-imagen-de-ubuntu)
-2. [Ambiente virtual de Python](#ambiente-virtual)
-3. [Modelos de imagen y audio](#modelos-de-imagen-y-audio)
-    - [Modelo de Audio](#modelo-de-audio)
+- [GUIA Y TUTORIAL PARA LA INSTALACION Y USO DEL SISTEMA DE DETECCION DE SONIDO E IMAGEN DEL PROYECTO SMART-CITIES](#guia-y-tutorial-para-la-instalacion-y-uso-del-sistema-de-deteccion-de-sonido-e-imagen-del-proyecto-smart-cities)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
+  - [Instalación de la imagen de Ubuntu](#instalación-de-la-imagen-de-ubuntu)
+  - [Ambiente Virtual](#ambiente-virtual)
+  - [MODELOS DE IMAGEN Y AUDIO](#modelos-de-imagen-y-audio)
+    - [MODELO DE AUDIO](#modelo-de-audio)
     - [Modelo de Imagen](#modelo-de-imagen)
+  - [TAREAS PENDIENTES](#tareas-pendientes)
 
 
 ## Instalación de la imagen de Ubuntu
@@ -269,7 +272,7 @@ Para más información sobre el acceso al drive escriba al correo: fabian.duque@
 ## TAREAS PENDIENTES 
 - [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
 - [x] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
-- [ ] Organizar la documentacion de los docstrings para que la reconozca dpoxygen
+- [ ] Organizar la documentacion de los docstrings para que la reconozca doxygen
 - [ ] Conectar el quectel 4G
 
 

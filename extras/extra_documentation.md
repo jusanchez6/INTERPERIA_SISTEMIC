@@ -1,12 +1,16 @@
-## DOCUMENTACIÓN EXTRA PARA LA VIM3
+# DOCUMENTACIÓN EXTRA PARA LA VIM3
 En este archivo se guarda toda la información para configurar aspectos extra del ambiente de la VIM3 para el modelamiento de imágenes y sonidos.
 
 ## Tabla de Contenidos
 
- 1. [Repositorio de Github](#repositorio-de-github)
- 2. [Instalación de Python 3.10.12](#instalación-de-python-31012)
- 3. [VS Code para VIM3](#vs-code-para-vim3)
- 4. [Configurar micrófono USB](#configurar-micrófono-usb-para-la-lectura)
+- [DOCUMENTACIÓN EXTRA PARA LA VIM3](#documentación-extra-para-la-vim3)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
+  - [Repositorio de Github](#repositorio-de-github)
+    - [Access Token](#access-token)
+    - [SSH](#ssh)
+  - [Instalación de Python 3.10.12](#instalación-de-python-31012)
+  - [VS Code para VIM3](#vs-code-para-vim3)
+  - [Configurar micrófono USB para la lectura](#configurar-micrófono-usb-para-la-lectura)
 
 ## Repositorio de Github
 En primer lugar, es necesario descargar el repositorio de Github, sin embargo clonarlo no es suficiente, sino que se debe poder hacer pushs y pulls desde la Vim3, por lo que se configurará también para poder hacer esto.
