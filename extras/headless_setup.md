@@ -71,3 +71,16 @@ Se siguen estos pasos para conectar desde VSCode:
 ## Anotaciones del uso de server
 
 Aquí van las soluciones de los problemas que se generen siguiendo el tutorial principal.
+
+### Descarga del modelo de Imagen
+Si bien hay bastante maneras para hacer esto, como se tiene que estos archivos tienen acceso restringido, esto se puede realizar generando un token de autorización mediante [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/) de la siguiente manera:
+- En la parte que dice *Select & authorize APIs* se elige *Drive API v3* y luego *https://www.googleapis.com/auth/drive.readonly*, después se presiona el botón *Authorize APIs* que lleva a la autenticación del usuario.
+- En la parte *Exchange authorization code for tokens* se presiona en primer lugar el botón con el mismo nombre y luego se copia el access token que aparece abajo, notar que este tiene un tiempo de expiración, por lo que si se expira se tiene que hacer el refresco de este.
+
+Finalmente se descarga el archivo desde la VIM3 en consola:
+```
+curl -H "Authorization: Bearer <access_token>" https://www.googleapis.com/drive/v3/files/<file_id>?alt=media -o <file_name>
+```
+Donde el `<access_token>` es el access token mencionado antes, `<file_id>` es el campo de ID que aparece en el link para compartir el archivo, y `<file_name>` es el nombre del archivo a descargar (En este caso sería `model_Vgg16_60_weapons`).
+
+Para mayor claridad, se puede revisar el siguiente [link](https://www.baeldung.com/linux/download-large-file-gdrive-cli).

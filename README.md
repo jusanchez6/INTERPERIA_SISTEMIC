@@ -264,9 +264,9 @@ from vgg_model import ModifiedVGG16Model, FusionVGG16Model
 ``` 
 Estas funciones son las encargadas de darle el atributo de clase al modelo de inferencia `model_Vgg16_60_weapons` el cual se encuentra en el siguiente link y debe ser descargado por aparte debido a las limitaciones de github para la gestión de archivos de grandes tamaños: https://drive.google.com/drive/folders/1UnFmhoa4pKH0X_dmDjfiNESFYX2bcNOL 
 
+Si se busca hacer la descarga de este archivo mediante el terminal revisar la [documentación extra](./extras/headless_setup.md#descarga-del-modelo-de-imagen).
+
 Para más información sobre el acceso al drive escriba al correo: fabian.duque@udea.edu.co
-
-
 
 
 ## TAREAS PENDIENTES 
@@ -274,5 +274,5 @@ Para más información sobre el acceso al drive escriba al correo: fabian.duque@
 - [x] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
 - [ ] Organizar la documentacion de los docstrings para que la reconozca doxygen
 - [ ] Conectar el quectel 4G
-
+ 
 

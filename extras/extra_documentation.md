@@ -138,3 +138,15 @@ lsusb
 ```
 Entre los puertos que se muestren tiene que estar el micrófono conectado, si no es así, revisar drivers o conexión física.
 Luego se selecciona como `default` abriendo la aplicación de `Settings` y expandiendo la opción de `Sound`, aquí, en la parte de `Input`, seleccionar en la lista expandible el micrófono que se conectó. Así, ya está listo para probar el código de Python.
+
+Para hacer esto mediante la línea de comandos se debe primero revisar el nombre del `card` del dispositivo conectado por USB mediante:
+```
+cat /proc/asound/cards
+```
+
+En el caso del micrófono miniDSP este tiene el nombre de `U18dB`. En la carpeta `etc` desde root se crea mediante el comando `nano` el archivo `asound.conf` que debe contener lo siguiente:
+```
+defaults.pcm.!card "1"
+defaults.ctl.!card "1"
+```
+En este caso se pone en comillas para que elija el último "dispositivo" en la lista.

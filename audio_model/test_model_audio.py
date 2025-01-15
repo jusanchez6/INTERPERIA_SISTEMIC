@@ -1,7 +1,9 @@
 ##
 # @file test_model_audio.py
 # 
-# @brief Este script contiene un test del funcionamiento del modelo de audio.
+# @brief Este script contiene un test del funcionamiento del modelo de audio,
+# dando la opción de usar los audios de prueba o grabar uno con el micrófono que esté
+# conectado.
 # 
 # @author : Felipe Ayala
 # @author : Julian Sanchez
@@ -14,13 +16,16 @@
 # @copyright SISTEMIC 2024
 ##
 
+#esto es para medir el tiempo de ejecución
+import time
+
 # Importar libreria de manejo de audio
 from audio_processing import *
 import tensorflow as tf
 
 # Configuración de valores por defecto
 filePathSave = "sample_sounds/mi_grabacion.wav"
-audio_file = "sample_sounds/gunshot_test.wav"
+audio_file = "sample_sounds/siren_test.wav"
 
 # # @section Configure Parameters
 # - conf1 = 0.97  
@@ -42,17 +47,27 @@ interpreter3.allocate_tensors() #Needed before execution!
 input3=interpreter3.get_input_details()[0] #Model has single input.
 output3=interpreter3.get_output_details()[0] #Model has single output.
 
+enter=input(f"\nUse sample audios? y/n ")
+if(enter != "y"):
+    print(f"\n\n----------------------Processing  ---------------------")
+    # Prepare audio file
+    grabar_audio(duracion=4, nombre_archivo=filePathSave)
 
-print(f"\n\n----------------------Processing  ---------------------")
+    #Comentar si se quiere probar con el archivo de prueba
+    audio_file=filePathSave
 
-# Prepare audio file
-grabar_audio(duracion=4, nombre_archivo=filePathSave)
-
-#Comentar si se quiere probar con el archivo de prueba
-audio_file=filePathSave
-
+start = time.time()
 prepare_audio(audio_file)
 
 print("----------------------Predicción Con Audio de prueba---------------------")
 a=ind_predict_ARQ4_TL(audio_file, input3, output3, interpreter3)
+end = time.time()
 print("a: ",a)
+print("Tiempo de preparación y predicción: ",end - start)
+
+
+# gunshot test -> 4.07s 4.04s 4.05s
+# scream test -> 3.88s 3.91s 3.96s
+# siren test -> 3.97s 3.96s 3.97s 
+
+#En general, parece que se demora siempre 4s, mirar si con la NPU esto disminuye, pero lo dudo
