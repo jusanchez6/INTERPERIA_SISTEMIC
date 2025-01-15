@@ -5,7 +5,7 @@
   - [Tabla de Contenidos](#tabla-de-contenidos)
   - [Instalación de la imagen de Ubuntu](#instalación-de-la-imagen-de-ubuntu)
   - [Conexión a Internet y set-up de la IP estática](#conexión-a-internet-y-set-up-de-la-ip-estática)
-  - [Port-fowarding para la IP pública](#port-fowarding-para-la-ip-pública)
+  - [Port-forwarding para la IP pública](#port-forwarding-para-la-ip-pública)
   - [Acceso remoto con VSCode](#acceso-remoto-con-vscode)
   - [Anotaciones del uso de server](#anotaciones-del-uso-de-server)
 
@@ -51,8 +51,12 @@ Si este comando no genera ningún problema también es posible revisar la conexi
 sudo ping -c 4 www.google.com
 ```
 
-## Port-fowarding para la IP pública
-Esta parte se detalla de manera más concreta en este [artículo](https://medium.com/@moligninip/how-to-connect-to-your-home-laptop-from-anywhere-with-ssh-604a7aee26a5). El port-fowarding se realiza debido a que la IP que tenemos para la máquina local solo funciona cuando ambas máquinas están conectadas a la misma red, para tener conexión desde diferentes redes, se debe vincular un puerto de la IP pública de la red al puerto de SSH de la IP privada de la máquina remota (VIM3). Para esto se debe entrar desde la máquina local desde un buscador a la IP privada del router (E.g. http://192.168.0.1) allí se ingresa el usuario y contraseña de este (Este par suelen ser admin admin). Tras entrar se hace el cambio explicado en esta página. (No es muy detallado porque no he podido con el bendito usuario y contraseña Y TIGO NO CONTESTA >:( )
+## Port-forwarding para la IP pública
+Esta parte se detalla de manera más concreta en este [artículo](https://medium.com/@moligninip/how-to-connect-to-your-home-laptop-from-anywhere-with-ssh-604a7aee26a5). El port-forwarding se realiza debido a que la IP que tenemos para la máquina local solo funciona cuando ambas máquinas están conectadas a la misma red, para tener conexión desde diferentes redes, se debe vincular un puerto de la IP pública de la red al puerto de SSH de la IP privada de la máquina remota (VIM3). Para esto se debe entrar desde la máquina local desde un buscador a la IP privada del router (E.g. http://192.168.0.1) allí se ingresa el usuario y contraseña de este (Este par suelen ser admin admin). Tras entrar se hace el cambio explicado en esta página, buscando la ventana de port forwarding (Usualmente este está bajo Firewall o Advanced). Allí se pide el Inbound o External Port, que sería el puerto de entrada de la IP pública, la IP privada de la máquina remota, y el Local o Internal Port que es el puerto al que se accede al SSH de la máquina local, este siempre es 22, el external port puede ser cualquier puerto libre (Mayor a 1024) o el mismo 22 si se tiene solo una máquina remota en la misma red.
+
+Adicionalmente se pide el protocolo a usar, se selecciona ambos o both (UDP Y TCP). Tras esto es posible acceder por la IP pública de la red a la máquina remota desde SSH.
+
+Para hacer el acceso de la universidad es necesario hablar con el profesor Germán para abrir el port necesario.
 
 ## Acceso remoto con VSCode
 
