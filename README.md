@@ -148,15 +148,14 @@ Una vez obtenidos los ejecutables, desde el terminal se puede ejecutar el siguie
 ./mipi /dev/video50"
 ```
 
-Este comando dependiendo del modo de funcionamiento seleccionado puede tomar varias imagenes a una tasa de 23 fps o podrá tomar una sola imagen y guardarla, a continuación se muestra los dos codigos:
-
+Este comando dependiendo del modo de funcionamiento seleccionado puede tomar varias imagenes a una tasa de 23 fps o podrá tomar una sola imagen y guardarla, a continuación se muestra los dos códigos:
 
 1. **MODO MULTITOMA**
 ```c
 const int FRAME_RATE = 23; // Tasa de fotogramas deseada
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv){
+
     if (argc != 2) {
         cerr << "Uso: " << argv[0] << " <dispositivo>" << endl;
         cerr << "Ejemplo: " << argv[0] << " /dev/video0" << endl;
@@ -262,7 +261,7 @@ int main(int argc, char** argv)
 ```
 Para utilzar un modo o el otro basta con comentar el código no deseado y ejecutar el comando de compilación y ejecución mostrados previamente. 
 
-En el archivom test_model se encuentra un script el cual prueba el modelo de inferencia de imagen de manera separada tal como se realizo con el modelo de audio. Para su ejecución es de vital importancia que el incluya las dos funciones del archivo `vgg_model.py` las cuales se incluyen mediant la linea de código
+En el archivo test_model se encuentra un script el cual prueba el modelo de inferencia de imagen de manera separada tal como se realizo con el modelo de audio. Para su ejecución es de vital importancia que el incluya las dos funciones del archivo `vgg_model.py` las cuales se incluyen mediante la línea de código
 ```python
 from vgg_model import ModifiedVGG16Model, FusionVGG16Model
 

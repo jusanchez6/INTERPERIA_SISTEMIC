@@ -44,7 +44,7 @@ git config --global user.email "your_email@example.com"
 ### Access Token
 - En la parte superior derecha de la página de Github, presionar su foto de perfil y presionar Settings.
 - De ahí, en el sidebar de la izquierda, ir a Developer Settings.
-- De nuevo, en el sidebar de la izquierda, presionar Tokens(Classic).
+- De nuevo, en el sidebar de la izquierda, presionar Tokens (Classic).
 - En la esquina derecha de la página, presionar Generate New Token.
 - Del listado, escoger Generate New Token (Classic), en Note escribir para qué se usa el token, escoger la fecha de vencimiento del token (Puede ser de 7 días) y escoger el scope del token, en este caso, sería repo.
 - Este debe generar un código que se copiará (si no se copia en ese momento es necesario eliminar el token y volver a intentar, ya que solo se muestra una vez) cuando se pida la contraseña al clonar el proyecto:
