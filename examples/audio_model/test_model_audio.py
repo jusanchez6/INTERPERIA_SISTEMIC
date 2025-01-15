@@ -20,7 +20,7 @@
 import time
 
 # Importar libreria de manejo de audio
-from audio_processing import *
+from audio_model.audio_processing import *
 import tensorflow as tf
 
 # Configuración de valores por defecto
@@ -36,7 +36,7 @@ audio_file = "sample_sounds/siren_test.wav"
 #  + "models/saved_gunshot_TL_4.tflite"
 #  + "models/saved_siren_TL_4.tflite"
 #  + "models/saved_scream_TL_4.tflite"
-path_3="models/saved_gun_scream_siren_TL_4.tflite"
+path_3="../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
 
 # # Load TFLite models

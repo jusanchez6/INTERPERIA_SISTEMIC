@@ -81,6 +81,11 @@ Si este segundo comando genera problemas, hacer un `sudo apt-get update` o un `s
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
+Para que funcionen las librerías locales como si root fuera la carpeta `.lib` se debe escribir en `[myenv]/bin/activate` lo siguiente:
+```bash
+export PYTHONPATH="/home/khadas/INTERPERIA_SISTEMIC/.lib"
+```
+Sin esto no se encontrarán algunas librerías de manera correcta.
 
 ## MODELOS DE IMAGEN Y AUDIO
 Si se desea y su editor preferido es VS Code, se anexa un tutorial corto de su instalación en la [documentación extra](./extras/extra_documentation.md#vs-code-para-vim3).
