@@ -17,6 +17,6 @@ single_frame.jpg
 *.wav
 
 # Don't ignore sample files
-!audio_model/sample_sounds/gunshot_test.wav
-!audio_model/sample_sounds/scream_test.wav
-!audio_model/sample_sounds/siren_test.wav
+!examples/audio_model/sample_sounds/gunshot_test.wav
+!examples/audio_model/sample_sounds/scream_test.wav
+!examples/audio_model/sample_sounds/siren_test.wav
