@@ -8,6 +8,7 @@
   - [Port-forwarding para la IP pública](#port-forwarding-para-la-ip-pública)
   - [Acceso remoto con VSCode](#acceso-remoto-con-vscode)
   - [Anotaciones del uso de server](#anotaciones-del-uso-de-server)
+    - [Descarga del modelo de Imagen](#descarga-del-modelo-de-imagen)
 
 
 ## Instalación de la imagen de Ubuntu
