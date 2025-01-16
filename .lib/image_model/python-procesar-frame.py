@@ -10,6 +10,12 @@ import threading
 app = Flask(__name__)
 
 def run_terminal_command(command):
+    """
+    Ejecuta un comando en la terminal y espera a que termine.
+
+    Args:
+        command (str): Comando a ejecutar.
+    """
     try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(result.stdout.decode())

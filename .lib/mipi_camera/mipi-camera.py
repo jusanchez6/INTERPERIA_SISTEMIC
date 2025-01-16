@@ -17,7 +17,7 @@ while True:
         print("Error al leer el frame")
         break
 
-    # Aquí puedes procesar el frame con OpenCV
+    # Aqui puedes procesar el frame con OpenCV
     #cv2.imshow('Frame', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):

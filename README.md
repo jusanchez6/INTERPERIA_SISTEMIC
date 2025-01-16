@@ -128,11 +128,12 @@ Para el modelo de imagen la camara requiere de una configuración previa, con el
 ```bash
 sudo apt update
 sudo apt install gstreamer-aml
+sudo apt install libopencv-dev python3-opencv
 ```
 
-El gstreamer es el programa encargado de crear el pipeline necesario para la captura de imahgenes, aunque hay documentación del uso de python con open CV **la implementación no fue posible.** Dentro de los archivos presentes en este repositorio se encontrara con los siguientes archivos: ```mipi.c```, ```mipi_stream.c``` y sus respectivos ejecutables. 
+El gstreamer es el programa encargado de crear el pipeline necesario para la captura de imágenes, aunque hay documentación del uso de python con openCV **la implementación no fue posible.** Dentro de los archivos presentes en este repositorio se encontrará con los siguientes archivos: ```mipi.c```, ```mipi_stream.c``` y sus respectivos ejecutables. 
 
-Estos archivos corresponden a los scripts que permiten el control de la cámara. Para la compilación de los archivos en C, se ejecuta el siguiente comando:
+Estos archivos corresponden a los scripts que permiten el control de la cámara. Para la compilación de los archivos en C, se ejecuta el siguiente comando desde la carpeta de `.lib/mipi_camera`:
 
 ```bash
 gcc -o mipi mipi-camera.cpp -lopencv_imgproc -lopencv_core -lopencv_videoio -
@@ -140,12 +141,12 @@ lopencv_imgcodecs -lopencv_highgui -std=c++11 -std=gnu++11 -Wall -std=c++11 -
 lstdc++ -I/usr/include/opencv4
 ```
 
-*Aunque en el repositorio se adjuntan los archivos compilados, se recomienda compilarlos para la verificación de las librerias instaladas y del correcto funcionamiento del script, ademas de la selección del modo de toma (multitoma, toma única)*
+*Aunque en el repositorio se adjuntan los archivos compilados, se recomienda compilarlos para la verificación de las librerias instaladas y del correcto funcionamiento del script, además de la selección del modo de toma (multitoma, toma única).*
 
 Una vez obtenidos los ejecutables, desde el terminal se puede ejecutar el siguiente comando, el cual mostrará el funcionamiento de la cámara:
 
 ```bash
-./mipi /dev/video50"
+./mipi "/dev/video50"
 ```
 
 Este comando dependiendo del modo de funcionamiento seleccionado puede tomar varias imagenes a una tasa de 23 fps o podrá tomar una sola imagen y guardarla, a continuación se muestra los dos códigos:
@@ -169,7 +170,7 @@ int main(int argc, char** argv){
     VideoCapture capture(gstfile);
 
     if (!capture.isOpened()) {
-        cerr << "Error al abrir la c�mara." << endl;
+        cerr << "Error al abrir la camara." << endl;
         return -1;
     }
 
@@ -261,10 +262,9 @@ int main(int argc, char** argv)
 ```
 Para utilzar un modo o el otro basta con comentar el código no deseado y ejecutar el comando de compilación y ejecución mostrados previamente. 
 
-En el archivo test_model se encuentra un script el cual prueba el modelo de inferencia de imagen de manera separada tal como se realizo con el modelo de audio. Para su ejecución es de vital importancia que el incluya las dos funciones del archivo `vgg_model.py` las cuales se incluyen mediante la línea de código
+En el archivo `test_model.py` dentro de la carpeta de ejemplos se encuentra un script el cual prueba el modelo de inferencia de imagen de manera separada tal como se realizó con el modelo de audio. Para su ejecución es de vital importancia que el incluya las dos funciones del archivo `vgg_model.py` las cuales se incluyen mediante la línea de código:
 ```python
 from vgg_model import ModifiedVGG16Model, FusionVGG16Model
-
 ``` 
 Estas funciones son las encargadas de darle el atributo de clase al modelo de inferencia `model_Vgg16_60_weapons` el cual se encuentra en el siguiente link y debe ser descargado por aparte debido a las limitaciones de github para la gestión de archivos de grandes tamaños: https://drive.google.com/drive/folders/1UnFmhoa4pKH0X_dmDjfiNESFYX2bcNOL 
 

@@ -1,4 +1,29 @@
+##
+# @file test_model.py
+# 
+# @brief Este script contiene un test del funcionamiento del modelo de imagen,
+# dando la opción de usar una imagen de prueba, tomar una imagen uno con el micrófono que esté
+# conectado.
+#  
+# @section funcs Funciones:
+# - run_terminal_command: Corre un comando por la terminal.
+# - extract_features: Extrae características de un archivo de audio usando la librería de librosa.
+# - test_model: Realiza la detección de armas en las imágenes de un directorio.
+#
+#
+# @author : Felipe Ayala
+# @author : Julian Sanchez
+# @author : Maria del Mar Arbelaez
+# 
+# @date: 2025-01-15
+# 
+# @version: 1.0
+# 
+# @copyright SISTEMIC 2025
+##
+
 import os
+import subprocess
 import glob
 from PIL import Image, ImageDraw
 from torchvision import transforms
@@ -6,19 +31,21 @@ import torch
 import json
 from datetime import datetime
 import pytz
-from image_processing import split_image, calculate_entropy, calculate_complexity, discard_images, extract_and_save_frame
-from vgg_model import ModifiedVGG16Model, FusionVGG16Model
+#esto es para medir el tiempo de ejecución
+import time
+
+from image_model.image_processing import split_image, calculate_entropy, calculate_complexity, discard_images, extract_and_save_frame
+from image_model.vgg_model import ModifiedVGG16Model, FusionVGG16Model
 
 #-----------------------------------------
 # Variables de entrada
-images_directory = "./images_cropped" 
-#revisar si se crea la carpeta si no existe
+images_directory = "./images_cropped"
+# Este folder puede no existir
 output_directory = "./output_images"
 split_width = 256
 overlap_percentage = 0.6
 classes = ["arma de fuego", "no arma de fuego"]
-path_model = "model_Vgg16_60_weapons"
-
+path_model = "../../.lib/image_model/models/model_Vgg16_60_weapons"
 
 def run_terminal_command(command):
     """
@@ -91,6 +118,9 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
         width, height = split_width, split_width
         draw.rectangle([x, y, x + width, y + height], outline="green")
 
+    if not os.path.isdir(output_directory):
+        os.makedirs(output_directory)
+
     output_image_path = os.path.join(output_directory, "imagen_original_con_bounding_boxes.png")
     imagen_original.save(output_image_path)
     print(f"Image with bounding boxes saved at: {output_image_path}")
@@ -106,7 +136,7 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
     # Construir el diccionario para el JSON
     result = {
         "tipo": "Imagen",
-        "detección": salida,
+        "deteccion": salida,
         "fecha": fecha_actual,  # Fecha y hora en zona horaria de Bogotá
         "bounding_boxes": bounding_boxes,
         "ruta_imagen_salida": output_image_path
@@ -119,36 +149,42 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
 
 # Ejemplo de uso:
 
-command = "./mipi /dev/video50"
-
 #---------------------------------------------
-# Ejecutando el terminal
-
-# Captura solo un fotograma de nombr: single_frame.jpg
-# run_terminal_command(command)
-
-
-#---------------------------------------------
-
-#---------------------------------------------
-# Desde un video
+# Desde un video (Esto lo arreglo después)
 # Extraer y guardar el primer frame de un video
 # video_path = "output_test.mp4"
 # output_image_path = "image_test.png"
 
 # extract_and_save_frame(video_path, output_image_path)
 
+#---------------------------------------------
+# Ejecutando el terminal
+
+if input("Usar imagen de prueba? y/n: ")!="y":
+    #Captura solo un fotograma de nombre: single_frame.jpg
+    command = "../../.lib/mipi_camera/mipi /dev/video50"
+    run_terminal_command(command)
+    file = "single_frame.jpg"
+
+#---------------------------------------------
+# Usando imagen de prueba
+else:
+    file = "sample_images/image_test.png"
 
 #---------------------------------------------
 # Inferencia del modelo
-file = "single_frame.jpg"
 
+
+start = time.time()
 split_image(file, images_directory, split_width, overlap_percentage)
 discard_images(images_directory, 7.0, 0.40)
 
 model = torch.load(path_model, map_location=torch.device('cpu'))
-r = test_model(model, images_directory, output_image_path, output_directory, split_width, classes)
+
+r = test_model(model, images_directory, file, output_directory, split_width, classes)
+end = time.time()
 
 print("r",r)
+print("Tiempo de preparación y predicción: ",end - start)
 
 #---------------------------------------------

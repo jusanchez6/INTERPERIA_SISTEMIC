@@ -20,4 +20,4 @@ single_frame.jpg
 !examples/audio_model/sample_sounds/gunshot_test.wav
 !examples/audio_model/sample_sounds/scream_test.wav
 !examples/audio_model/sample_sounds/siren_test.wav
-!image_model/sample_images/image_test.png
+!examples/image_model/sample_images/image_test.png

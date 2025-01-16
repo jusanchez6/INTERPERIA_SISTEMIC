@@ -11,7 +11,7 @@ Funciones:
 - extract_and_save_frame: Extrae el primer frame de un video .mp4 y lo guarda como un archivo .png.
 
 authors: Felipe Ayala
-        Julian Sanchez
+         Julian Sanchez
 
 date: 2024-10-24
 
