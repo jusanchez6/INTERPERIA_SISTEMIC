@@ -1,30 +1,40 @@
-"""
-Este módulo contiene funciones para dividir una imagen en partes más pequeñas y
-calcular la entropía y complejidad de las imágenes.
-
-Funciones:
-- start_points: Genera los puntos de inicio para dividir una imagen en partes más pequeñas.
-- split_image: Divide una imagen en partes más pequeñas.
-- calculate_entropy: Calcula la entropía de una imagen.
-- calculate_complexity: Calcula el índice de complejidad de una imagen.
-- discard_images: Descarta imágenes que caen por debajo de los umbrales de entropía y complejidad.
-- extract_and_save_frame: Extrae el primer frame de un video .mp4 y lo guarda como un archivo .png.
-
-authors: Felipe Ayala
-         Julian Sanchez
-
-date: 2024-10-24
-
-version: 1.0
-
-SISTEMIC 2024
-
-"""
+##
+# 
+# @file image_processing.py
+#
+# @brief Este módulo contiene funciones para dividir una imagen en partes más pequeñas y
+# calcular la entropía y complejidad de las imágenes.
+#
+# @section funcs Funciones:
+# - start_points: Genera los puntos de inicio para dividir una imagen en partes más pequeñas.
+# - split_image: Divide una imagen en partes más pequeñas.
+# - calculate_entropy: Calcula la entropía de una imagen.
+# - calculate_complexity: Calcula el índice de complejidad de una imagen.
+# - discard_images: Descarta imágenes que caen por debajo de los umbrales de entropía y complejidad.
+# - extract_and_save_frame: Extrae el primer frame de un video .mp4 y lo guarda como un archivo .png.
+# - gen_frames: Genera un flujo de imágenes en un hilo separado en el modo multitoma y las envía a través de HTTP.
+# - run_terminal_command: corre un comando en el terminal.
+#
+# @author: Felipe Ayala
+# @author: Julian Sanchez
+# @author: Maria del Mar Arbelaez
+#
+# @date: 2025-01-19
+#
+# @version: 1.0
+#
+# @copyright SISTEMIC 2025
+##
 
 from PIL import Image, ImageFilter
 import numpy as np
 import os
+import imageio
 import glob
+import subprocess
+import threading
+from time import sleep
+
 
 def start_points(size, split_size, overlap=0):
     """Genera los puntos de inicio para dividir una imagen en partes más pequeñas.
@@ -145,3 +155,58 @@ def extract_and_save_frame(video_path, output_image_path):
     finally:
         # Cerrar el lector
         reader.close()
+
+def gen_frames():
+    """
+    Función que genera un flujo de imágenes en formato JPEG. 
+    Ejecuta el comando `./frameC /dev/video50` en un hilo separado para capturar las imágenes de un dispositivo de video
+    y las envía como un flujo de imágenes JPEG a través de HTTP.
+
+    El flujo generado es compatible con el protocolo `multipart/x-mixed-replace`, utilizado comúnmente para 
+    transmisión de video MJPEG en tiempo real.
+    """
+
+    # Comando que ejecuta la captura de imágenes del dispositivo de video
+    command = "./frameC /dev/video50"
+
+    # Ejecuta el comando en un hilo separado para no bloquear el hilo principal
+    threading.Thread(target=run_terminal_command, args=(command,)).start()  # Ejecuta el comando en paralelo
+    while True:
+        # Ruta del archivo de imagen generado por el comando
+        output_image_path = 'current_frame.jpg'
+
+        try:
+            # Abre el archivo de imagen en modo de lectura binaria
+            with open(output_image_path, 'rb') as f:
+                # Lee el contenido del archivo (la imagen JPEG)
+                frame = f.read()
+
+                # Genera el flujo multipart para el protocolo MJPEG
+                # El flujo se divide en partes separadas por los delimitadores '--frame'
+                # Cada parte incluye los encabezados para el tipo de contenido 'image/jpeg' y el contenido de la imagen
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        except FileNotFoundError:
+            # Si no se encuentra el archivo, espera 0.1 segundos y vuelve a intentarlo
+            # Esto puede ocurrir si el archivo de imagen aún no está disponible
+            sleep(0.1)
+            continue
+        
+        except Exception as e:
+            # En caso de cualquier otro error, muestra el mensaje de error y termina la ejecución
+            print(f"Error al leer el archivo de imagen: {e}")
+            break
+
+def run_terminal_command(command):
+    """
+    Ejecuta un comando en la terminal y espera a que termine.
+
+    Args:
+        command (str): Comando a ejecutar.
+    """
+    try:
+        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(result.stdout.decode())
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar el comando: {e.stderr.decode()}")

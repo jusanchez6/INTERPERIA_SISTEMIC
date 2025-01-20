@@ -34,7 +34,7 @@ import pytz
 #esto es para medir el tiempo de ejecución
 import time
 
-from image_model.image_processing import split_image, calculate_entropy, calculate_complexity, discard_images, extract_and_save_frame
+from image_model.image_processing import *
 from image_model.vgg_model import ModifiedVGG16Model, FusionVGG16Model
 
 #-----------------------------------------
@@ -46,20 +46,6 @@ split_width = 256
 overlap_percentage = 0.6
 classes = ["arma de fuego", "no arma de fuego"]
 path_model = "../../.lib/image_model/models/model_Vgg16_60_weapons"
-
-def run_terminal_command(command):
-    """
-    Ejecuta un comando en la terminal y espera a que termine.
-
-    Args:
-        command (str): Comando a ejecutar.
-    """
-    try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #print(result.stdout.decode())
-    except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar el comando: {e.stderr.decode()}")
-
 
 def test_model(model, image_directory, image_original_path, output_directory, split_width, classes):
     """

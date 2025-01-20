@@ -272,7 +272,6 @@ Si se busca hacer la descarga de este archivo mediante el terminal revisar la [d
 
 Para más información sobre el acceso al drive escriba al correo: fabian.duque@udea.edu.co
 
-
 ## TAREAS PENDIENTES 
 - [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
 - [x] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`

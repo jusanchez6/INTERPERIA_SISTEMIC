@@ -150,3 +150,6 @@ defaults.pcm.!card "1"
 defaults.ctl.!card "1"
 ```
 En este caso se pone en comillas para que elija el último "dispositivo" en la lista.
+
+## Serialización del firmware
+Para la posible duplicación de la misma imagen cuando esté listo el firmware se podría utilizar [esto](https://docs.khadas.com/products/sbc/vim3/development/create-bootable-tf-card)
