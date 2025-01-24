@@ -12,7 +12,9 @@
 
 
 ## Instalación de la imagen de Ubuntu
-Esta parte es análoga  a la que se muestra en la [documentación principal](../README.md#instalación-de-la-imagen-de-ubuntu) eligiendo esta ver la opción server `vim3-ubuntu-24.04-server-linux-5.15-fenix-1.6.9-240618.img.xz`, al ser la misma versión de la que se trabaja con gnome, debería funcionar de manera correcta con el hardware y software implementado.
+Esta parte es análoga  a la que se muestra en la [documentación principal](../README.md#instalación-de-la-imagen-de-ubuntu) eligiendo esta ver la opción server `vim3-ubuntu-22.04-server-linux-5.15-fenix-1.6.9-240618.img.xz`, al ser la misma versión de la que se trabaja con gnome, debería funcionar de manera correcta con el hardware y software implementado.
+
+En caso de que Oowow no funcione también se puede seguir este tutorial mediante [USB](https://docs.khadas.com/products/sbc/vim3/install-os/install-os-into-emmc-via-usb-tool#vim33l-install-os-into-emmc-via-usb-flash-tool).
 
 Es posible tambien seguir este [tutorial](https://www.youtube.com/watch?v=CHXrHLNiai0) para la instalación de la imagen, al igual que dejar de una vez la IP estática sin tener necesidad de conectar la VIM3 a un monitor y teclado, sin embargo, por facilidad y conocimiento del ambiente, se va a hacer el set-up con estos accesorios.
 
@@ -34,14 +36,15 @@ sudo nmcli d wifi connect your_ssid password number_text wep-key-type key ifname
 Se puede revisar la conexión con `ifconfig`.
 
 En caso de hacer la conexión por ethernet, solo se hace algo análogo a esta parte de establecer la IP estática, para más información, este artículo se usó de [referencia](https://www.freecodecamp.org/news/setting-a-static-ip-in-ubuntu-linux-ip-address-tutorial/).
-En primer lugar, se entra a `etc/netplan` desde root en la VIM3. Allí, se puede agregar un archivo que tenga prioridad sobre los otros en orden alfabético o se modifica el archivo creado por lo pasos anteriores (Se revisa su existencia con `ls`) usando `sudo nano nombre_del_archivo.yaml` se busca tener una estructura similar a la siguiente:
+En primer lugar, se entra a `etc/netplan` (Si no se encuentra, se debe aplicar `sudo apt install netplan.io`) desde root en la VIM3. Allí, se puede agregar un archivo que tenga prioridad sobre los otros en orden alfabético o se modifica el archivo creado por lo pasos anteriores (Se revisa su existencia con `ls`) usando `sudo nano nombre_del_archivo.yaml` se busca tener una estructura similar a la siguiente, aunque es bueno revisar la documentación de netplan para estos motivos:
 ```
-wifi:
-     dhcp4: no
-     addresses: [192.186.0.254/24]
-     gateway4: 192.168.1.1
-     nameservers:
-         addresses: [8.8.8.8,8.8.8.4]
+wifis:
+     wlan0:
+       dhcp4: false
+       addresses: [192.186.0.254/24]
+       gateway4: 192.168.0.1
+       nameservers:
+           addresses: [8.8.8.8,8.8.8.4]
 ```
 En donde el primer addresses es la IP estática que se busca indicar y el gateway es el gateway predeterminado de la red (Recordar que esta IP tiene que seguir con el campo libre de IPs que se presentan teniendo el IP de la red y la máscara de red). Para aplicar los cambios se aplica en command line:
 ```
