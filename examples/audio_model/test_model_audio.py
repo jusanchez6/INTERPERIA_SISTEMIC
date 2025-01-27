@@ -23,8 +23,6 @@ import time
 from audio_model.audio_processing import *
 import tensorflow as tf
 
-
-
 #
 # Librerias para el uso del tflite 
 #
@@ -38,7 +36,7 @@ import sys
 BACKENDS = "GpuAcc"
 
 # Set the path to the TFLite delegate:
-DELEGATE_PATH = "./libarmnn_delegate.so.29"
+#DELEGATE_PATH = "./libarmnn_delegate.so.29"
 
 # Model Pat:
 MODEL_PATH = "../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
@@ -61,6 +59,7 @@ path_3="../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
 # # load TFLite models-------------------------------------------------------------------
 # modelo  nuevo
+"""
 armnn_delegate = tflite.load_delegate(
     library = DELEGATE_PATH,
     options = {
@@ -68,7 +67,6 @@ armnn_delegate = tflite.load_delegate(
         "logging-severity": "info",
     }
 )
-
 
 interpreter = tflite.Interpreter(
     model_path = MODEL_PATH,
@@ -79,7 +77,7 @@ interpreter.allocate_tensors()
 input = interpreter.get_input_details()[0]
 output = interpreter.get_output_details()[0]
 # ------------------------------------------------------------------------------------------
-
+"""
 
 
 # # Load TFLite models-------------------------------------------------------------------
@@ -104,13 +102,13 @@ if(enter != "y"):
     grabar_audio(duracion=4, nombre_archivo=filePathSave)
 
     #Comentar si se quiere probar con el archivo de prueba
-    audio_file=filePathSave
+    AUDIO_PATH=filePathSave
 
 start = time.time()
-prepare_audio(audio_file)
+prepare_audio(AUDIO_PATH)
 
 print("----------------------Predicción Con Audio de prueba---------------------")
-a=ind_predict_ARQ4_TL(audio_file, input3, output3, interpreter3)
+a=ind_predict_ARQ4_TL(AUDIO_PATH, input3, output3, interpreter3)
 end = time.time()
 print("a: ",a)
 print("Tiempo de preparación y predicción: ",end - start)

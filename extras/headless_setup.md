@@ -12,7 +12,7 @@
 
 
 ## Instalación de la imagen de Ubuntu
-Esta parte es análoga  a la que se muestra en la [documentación principal](../README.md#instalación-de-la-imagen-de-ubuntu) eligiendo esta ver la opción server `vim3-ubuntu-22.04-server-linux-5.15-fenix-1.6.9-240618.img.xz`, al ser la misma versión de la que se trabaja con gnome, debería funcionar de manera correcta con el hardware y software implementado.
+Esta parte es análoga  a la que se muestra en la [documentación principal](../README.md#instalación-de-la-imagen-de-ubuntu) eligiendo esta ver la opción server `vim3-ubuntu-24.04-server-linux-5.15-fenix-1.6.9-240618.img.xz`, al ser la misma versión de la que se trabaja con gnome, debería funcionar de manera correcta con el hardware y software implementado. (Hay que revisar la versión que vaya a funcionar, voy a probar el uso de la npu con 20.04, pero si no, se trabaja con la GPU en 24.04).
 
 En caso de que Oowow no funcione también se puede seguir este tutorial mediante [USB](https://docs.khadas.com/products/sbc/vim3/install-os/install-os-into-emmc-via-usb-tool#vim33l-install-os-into-emmc-via-usb-flash-tool).
 
