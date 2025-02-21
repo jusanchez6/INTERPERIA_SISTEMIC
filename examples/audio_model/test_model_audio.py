@@ -20,8 +20,8 @@
 import time
 
 # Importar libreria de manejo de audio
-from audio_model.audio_processing import *
-import tensorflow as tf
+#from audio_model.audio_processing import *
+#import tensorflow as tf
 
 #
 # Librerias para el uso del tflite 
@@ -32,19 +32,16 @@ import sounddevice as sd
 import librosa
 import sys
 
-# Preferencias de backend
-BACKENDS = "GpuAcc"
+import subprocess
+
 
 # Set the path to the TFLite delegate:
 #DELEGATE_PATH = "./libarmnn_delegate.so.29"
 
 # Model Pat:
-MODEL_PATH = "../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
 
-# Configuración de valores por defecto
-filePathSave = "sample_sounds/mi_grabacion.wav"
-AUDIO_PATH = "sample_sounds/siren_test.wav"
+
 
 # # @section Configure Parameters
 # - conf1 = 0.97  
@@ -57,13 +54,64 @@ AUDIO_PATH = "sample_sounds/siren_test.wav"
 #  + "models/saved_scream_TL_4.tflite"
 path_3="../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
-# # load TFLite models-------------------------------------------------------------------
-# modelo  nuevo
-"""
+
+command0 = "wget -O ArmNN-aarch64.tgz https://github.com/ARM-software/armnn/releases/download/v24.11/ArmNN-linux-aarch64.tar.gz"
+command1 = "mkdir libs"
+command2 = "tar -xvf ArmNN-aarch64.tgz -C libs"
+command3 = "sudo ln ./libs/delegate/libarmnnDelegate.so.29.1 libarmnnDelegate.so.29"
+command4 = "sudo ln ./libs/libarmnn.so.34.0 libarmnn.so.34"
+
+
+
+def run_terminal_command(command):
+    """
+    Ejecuta un comando en la terminal y espera a que termine.
+
+    Args:
+        command (str): Comando a ejecutar.
+    """
+    try:
+        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        #print(result.stdout.decode())
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar el comando: {e.stderr.decode()}")
+
+run_terminal_command(command0)
+run_terminal_command(command1)
+run_terminal_command(command2)
+run_terminal_command(command3)
+run_terminal_command(command4)
+
+
+# Preferencias de backend
+BACKENDS = "GpuAcc"
+
+# PATH DEL MODELO
+MODEL_PATH = "../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
+
+# PATH DEL DELEGATE
+DELEGATE_PATH = "./libarmnnDelegate.so.29"
+
+# Configuración de valores por defecto
+filePathSave = "sample_sounds/mi_grabacion.wav"
+AUDIO_PATH = "sample_sounds/siren_test.wav"
+
+# Map the tag output to the appropriate string
+TAGS = {
+        0:'scream',
+        1:'gunshot',
+        2:'siren',
+
+}
+
+
+DURATION = 4
+SR = 22050
+
 armnn_delegate = tflite.load_delegate(
     library = DELEGATE_PATH,
     options = {
-        "backends": BACKENDS,
+        "backends":BACKENDS,
         "logging-severity": "info",
     }
 )
@@ -74,45 +122,10 @@ interpreter = tflite.Interpreter(
 )
 
 interpreter.allocate_tensors()
-input = interpreter.get_input_details()[0]
-output = interpreter.get_output_details()[0]
-# ------------------------------------------------------------------------------------------
-"""
 
 
-# # Load TFLite models-------------------------------------------------------------------
-# modelo  anterior     
-#
-interpreter3=tf.lite.Interpreter(model_path=path_3)
-
-interpreter3.allocate_tensors() #Needed before execution!
-
-input3=interpreter3.get_input_details()[0] #Model has single input.
-output3=interpreter3.get_output_details()[0] #Model has single output.
-
-# # -------------------------------------------------------------------b
-#
-
-
-
-enter=input(f"\nUse sample audios? y/n ")
-if(enter != "y"):
-    print(f"\n\n----------------------Processing  ---------------------")
-    # Prepare audio file
-    grabar_audio(duracion=4, nombre_archivo=filePathSave)
-
-    #Comentar si se quiere probar con el archivo de prueba
-    AUDIO_PATH=filePathSave
-
-start = time.time()
-prepare_audio(AUDIO_PATH)
-
-print("----------------------Predicción Con Audio de prueba---------------------")
-a=ind_predict_ARQ4_TL(AUDIO_PATH, input3, output3, interpreter3)
-end = time.time()
-print("a: ",a)
-print("Tiempo de preparación y predicción: ",end - start)
-
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 # gunshot test -> 4.07s 4.04s 4.05s
 # scream test -> 3.88s 3.91s 3.96s
