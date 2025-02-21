@@ -23,20 +23,7 @@ import time
 from audio_model.audio_processing import *
 import tensorflow as tf
 
-#
-# Librerias para el uso del tflite 
-#
-import numpy as np
-import tflite_runtime.interpreter as tflite
-import sounddevice as sd
-import librosa
-import sys
 
-# Preferencias de backend
-BACKENDS = "GpuAcc"
-
-# Set the path to the TFLite delegate:
-#DELEGATE_PATH = "./libarmnn_delegate.so.29"
 
 # Model Pat:
 MODEL_PATH = "../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
@@ -57,31 +44,7 @@ AUDIO_PATH = "sample_sounds/siren_test.wav"
 #  + "models/saved_scream_TL_4.tflite"
 path_3="../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
-# # load TFLite models-------------------------------------------------------------------
-# modelo  nuevo
-"""
-armnn_delegate = tflite.load_delegate(
-    library = DELEGATE_PATH,
-    options = {
-        "backends": BACKENDS,
-        "logging-severity": "info",
-    }
-)
-
-interpreter = tflite.Interpreter(
-    model_path = MODEL_PATH,
-    experimental_delegates = [armnn_delegate]
-)
-
-interpreter.allocate_tensors()
-input = interpreter.get_input_details()[0]
-output = interpreter.get_output_details()[0]
-# ------------------------------------------------------------------------------------------
-"""
-
-
-# # Load TFLite models-------------------------------------------------------------------
-# modelo  anterior     
+   
 #
 interpreter3=tf.lite.Interpreter(model_path=path_3)
 
