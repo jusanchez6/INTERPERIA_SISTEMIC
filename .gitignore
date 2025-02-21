@@ -1,14 +1,19 @@
 #Folders
 __pycache__
 myenv/
+work/
 images_cropped/
 output_images/
 model_Vgg16_60_weapons/
+examples/audio_model/libs
 
 #Archives
 model_Vgg16_60_weapons.zip
 model_Vgg16_60_weapons
 single_frame.jpg
+examples/audio_model/ArmNN-aarch64.tgz
+examples/audio_model/libarmnnDelegate.so.29
+examples/audio_model/libarmnn.so.34
 
 # type of files
 *.png
