@@ -155,7 +155,7 @@ if input("Usar imagen de prueba? y/n: ")!="y":
 #---------------------------------------------
 # Usando imagen de prueba
 else:
-    file = "sample_images/image_test.png"
+    file = "sample_images/ejem6.jpg"
 
 #---------------------------------------------
 # Inferencia del modelo
