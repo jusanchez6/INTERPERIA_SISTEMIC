@@ -88,13 +88,28 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
         imagen = transform(imagen).unsqueeze(0)
         output = model(imagen)
         _, predicted = torch.max(output, 1)
-        
-        if predicted.item() == 0:
+
+        # Calcular probabilidades con softmax
+        probabilities = torch.nn.functional.softmax(output, dim=1)
+
+        # Probabilidad de que la imagen contenga un arma
+        prob_weapon = probabilities[0, 0].item()  # Índice 0 = "arma de fuego"
+
+
+        # FILTRO DE PROBABILIDADES----------------------------------------------------------------------------------
+        # Definir un umbral mínimo para considerar detección
+        threshold = 0.999  
+
+        if prob_weapon >= threshold:  # Solo detectar si supera el umbral
             bounding_boxes[image_file] = (x, y)
             if not flag:
                 print("Weapon Detected")
                 salida = "Weapon Detected"
                 flag = True
+        
+        print(f'Predicted: {prob_weapon}')
+        #------------------------------------------------------------------------------------------------------------  
+
 
     # Dibujar los bounding boxes en la imagen original
     imagen_original = Image.open(image_original_path)
@@ -124,7 +139,7 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
         "tipo": "Imagen",
         "deteccion": salida,
         "fecha": fecha_actual,  # Fecha y hora en zona horaria de Bogotá
-        "bounding_boxes": bounding_boxes,
+        #"bounding_boxes": bounding_boxes, #esto está comentado por mi salud mental
         "ruta_imagen_salida": output_image_path
     }
 
@@ -155,12 +170,12 @@ if input("Usar imagen de prueba? y/n: ")!="y":
 #---------------------------------------------
 # Usando imagen de prueba
 else:
-    file = "sample_images/image_test.png"
+    file = "sample_images/image_test2.png" 
 
 #---------------------------------------------
 # Inferencia del modelo
 
-
+            
 start = time.time()
 split_image(file, images_directory, split_width, overlap_percentage)
 discard_images(images_directory, 7.0, 0.40)

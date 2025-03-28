@@ -13,37 +13,26 @@
 # 
 # @version: 1.0
 # 
-# @copyright SISTEMIC 2024
+# @copyright SISTEMIC 2025
 ##
 
 #esto es para medir el tiempo de ejecución
 import time
 
 # Importar libreria de manejo de audio
-#from audio_model.audio_processing import *
+from audio_model.audio_processing import *
+from image_model.image_processing import run_terminal_command
 #import tensorflow as tf
 
 #
 # Librerias para el uso del tflite 
 #
+
 import numpy as np
 import tflite_runtime.interpreter as tflite
 import sounddevice as sd
 import librosa
 import sys
-
-import subprocess
-
-sys.path.append("../../.lib/audio_model")  # Agregar la ruta a `sys.path`
-from audio_processing import *  # Ahora Python puede encontrar el módulo
-
-# Set the path to the TFLite delegate:
-#DELEGATE_PATH = "./libarmnn_delegate.so.29"
-
-# Model Pat:
-
-
-
 
 # # @section Configure Parameters
 # - conf1 = 0.97  
@@ -54,6 +43,8 @@ from audio_processing import *  # Ahora Python puede encontrar el módulo
 #  + "models/saved_gunshot_TL_4.tflite"
 #  + "models/saved_siren_TL_4.tflite"
 #  + "models/saved_scream_TL_4.tflite"
+
+# Model Path:
 path_3="../../.lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
 
@@ -62,21 +53,6 @@ command1 = "mkdir libs"
 command2 = "tar -xvf ArmNN-aarch64.tgz -C libs"
 command3 = "sudo ln ./libs/delegate/libarmnnDelegate.so.29.1 libarmnnDelegate.so.29"
 command4 = "sudo ln ./libs/libarmnn.so.34.0 libarmnn.so.34"
-
-
-
-def run_terminal_command(command):
-    """
-    Ejecuta un comando en la terminal y espera a que termine.
-
-    Args:
-        command (str): Comando a ejecutar.
-    """
-    try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #print(result.stdout.decode())
-    except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar el comando: {e.stderr.decode()}")
 
 run_terminal_command(command0)
 run_terminal_command(command1)
