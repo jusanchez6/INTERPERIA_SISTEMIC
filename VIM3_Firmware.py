@@ -22,7 +22,7 @@ import signal
 # Import local functions
 from audio_model.audio_processing import prepare_audio, extract_features
 from storage_manager import ensure_storage_space, delete_old_files, save_audio
-from image_processing import split_image, calculate_entropy, calculate_complexity, discard_images
+from image_model.image_processing import split_image, calculate_entropy, calculate_complexity, discard_images
 from test_model import test_model
 from vgg_model import ModifiedVGG16Model, FusionVGG16Model
 from flask import Flask, render_template , jsonify
