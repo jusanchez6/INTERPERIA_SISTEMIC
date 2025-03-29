@@ -87,8 +87,9 @@ Para finalizar la preparación del ambiente virtual es necesario instalar las li
 
 ```bash
 source [myenv]/bin/activate
-sudo apt-get install -y python3-dev python3-pip build-essential libhdf5-dev libffi-dev
+sudo apt-get install -y python3-dev python3-pip build-essential libhdf5-dev libffi-dev pkg-config
 sudo apt-get install -y gcc-aarch64-linux-gnu g++
+export HDF5_DIR=/usr/lib/aarch64-linux-gnu/hdf5/serial
 ```
 
 Si este segundo comando genera problemas, hacer un `sudo apt-get update` o un `sudo apt --fix-missing`. Se acaba el proceso con:
