@@ -1,8 +1,39 @@
+##
+# @file storage_manager.py
+#
+# @brief Este módulo se encarga de generar la clase del modelo modificado o con fusión. SE REQUIERE esta
+# clase para la apertura del modelo.
+
+# Este script contiene varias funciones utilitarias para manejar estructuras de directorios, 
+# gestionar el espacio de almacenamiento, calcular el tamaño de las carpetas y guardar archivos de audio. 
+# Las funciones trabajan con operaciones del sistema de archivos, como verificar el espacio libre, 
+# eliminar archivos antiguos y asegurar suficiente espacio de almacenamiento para nuevos archivos. 
+# Además, proporciona una forma de guardar archivos de audio con nombres de archivo basados en la marca de tiempo.
+#
+# @section funcs Funciones
+#  - get_free_space_gb: Obtiene el espacio libre en gigabytes de un directorio.
+#  - get_folder_size: Calcula el tamaño de una carpeta en gigabytes.
+#  - get_folder_size_du: Calcula el tamaño de una carpeta en gigabytes usando el comando 'du'.
+#  - create_directory_structure: Crea la estructura de directorios para almacenar archivos de audio.
+#  - delete_old_files: Elimina archivos más antiguos de ciertos días en una carpeta.
+#  - ensure_storage_space: Asegura que haya suficiente espacio de almacenamiento antes de guardar nuevos archivos.
+#  - save_audio: Guarda un archivo de audio en la carpeta de destino con un nombre basado en la marca de tiempo.
+#
+# @author: Felipe Ayala ??????
+# @author: Maria del Mar Arbelaez (Docs)
+#
+# @date: 2024-03-29
+#
+# @version: 1.0
+#
+# @copyright SISTEMIC 2025
+#
+##
+
 import os
 import subprocess
 import shutil
 from datetime import datetime, timedelta
-
 
 def get_free_space_gb(folder):
     """

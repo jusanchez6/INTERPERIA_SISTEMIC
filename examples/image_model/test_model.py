@@ -103,11 +103,11 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
         if prob_weapon >= threshold:  # Solo detectar si supera el umbral
             bounding_boxes[image_file] = (x, y)
             if not flag:
-                print("Weapon Detected")
+                #print("Weapon Detected")
                 salida = "Weapon Detected"
                 flag = True
         
-        print(f'Predicted: {prob_weapon}')
+        #print(f'Predicted: {prob_weapon}')
         #------------------------------------------------------------------------------------------------------------  
 
 
@@ -139,7 +139,7 @@ def test_model(model, image_directory, image_original_path, output_directory, sp
         "tipo": "Imagen",
         "deteccion": salida,
         "fecha": fecha_actual,  # Fecha y hora en zona horaria de Bogotá
-        #"bounding_boxes": bounding_boxes, #esto está comentado por mi salud mental
+        "bounding_boxes": bounding_boxes, #esto está comentado por mi salud mental
         "ruta_imagen_salida": output_image_path
     }
 

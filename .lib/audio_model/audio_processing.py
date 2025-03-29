@@ -175,16 +175,13 @@ def ind_predict_ARQ4_TL(path, inputM, outputM, interpreterM):
         #convertir a float- Julian 10 de octubre 2024
         nivel_confianza = float(nivel_confianza) if isinstance(nivel_confianza, np.float32) else nivel
 
-
         result = {
             "tipo": tipo,
             "deteccion": deteccion,
             "fecha": fecha_actual,  # Fecha y hora en zona horaria de Bogotá
             "nivel_confianza": nivel_confianza
         }
-
-
-
+        
         return json.dumps(result, indent=4)
 
     # Si no hay detección

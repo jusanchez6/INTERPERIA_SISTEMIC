@@ -1,40 +1,61 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun 11 11:00:45 2024
+##
+# @file VIM3_Firmware.py
+# 
+# @brief Este script contiene la integración de todo el código, entre modelos de audio e imagen, para VIM3 del pryecto INTERPERIA de Sistemic.
+# 
+# @section funcs Funciones:
+# - prepare_audio: Prepara el audio para el procesamiento
+# - extract_features: Extrae características de un archivo de audio usando la librería de librosa.
+# - grabar_audio: Graba audio del dispositivo conectado
+# - ind_predict_ARQ4_TL:  Hace la predicción del audio para el evento adecuado.
+#
+# @author : Felipe Ayala
+# @author : Julian Sanchez
+# @author : Maria del Mar Arbelaez
+# 
+# @date: 2025-03-29
+# 
+# @version: 1.0
+# 
+# @copyright SISTEMIC 2025
+##
 
-@author: felip
-"""
+
+# -*- coding: utf-8 -*-
 
 import os
 import librosa
-import numpy as np
 import torch
 import tensorflow as tf
-from scipy.io.wavfile import read, write
-from datetime import datetime, timedelta
 import time
 import threading
-from PIL import Image
 import imageio
 import subprocess
 import queue
 import signal
+import datetime
+import numpy as np
+import tensorflow as tf
+from datetime import datetime, timedelta
+from flask import Flask, render_template , jsonify
+from PIL import Image
+from scipy.io.wavfile import read, write
+
 # Import local functions
 from audio_model.audio_processing import prepare_audio, extract_features
+from image_model.image_processing import *
+from image_model.vgg_model import ModifiedVGG16Model, FusionVGG16Model
+from examples.image_model.test_model import test_model #this is a test function for the image model
 from storage_manager import ensure_storage_space, delete_old_files, save_audio
-from image_model.image_processing import split_image, calculate_entropy, calculate_complexity, discard_images
-from test_model import test_model
-from vgg_model import ModifiedVGG16Model, FusionVGG16Model
-from flask import Flask, render_template , jsonify
-import datetime
 
 #
 # Configuración de valores por defecto
-filePathSave = "/mnt/sdcard/tempAudio.wav"
+filePathSave = "/mnt/sdcard/tempAudio.wav" #save on the SD card
 max_segments_size_gb = 2.0
 max_events_size_gb = 1.0
-days_to_keep_storage = 0
-audio_file = "gunshot_test.wav"
+days_to_keep_storage = 0 
+
+audio_file = "examples/audio_model/sample_sounds/gunshot_test.wav"
 # Especifica la ruta de tu archivo de audio aquí
 
 # # Configuration Parameters
@@ -46,7 +67,7 @@ audio_file = "gunshot_test.wav"
 # fusedModelSavePathGun_TL_4_tflite = "models/saved_gunshot_TL_4.tflite"
 # fusedModelSavePathSiren_TL_4_tflite = "models/saved_siren_TL_4.tflite"
 # fusedModelSavePathScream_TL_4_tflite = "models/saved_scream_TL_4.tflite"
-path_3="models/saved_gun_scream_siren_TL_4.tflite"
+path_3=".lib/audio_model/models/saved_gun_scream_siren_TL_4.tflite"
 
 
 # # Load TFLite models
@@ -59,12 +80,10 @@ interpreter3=tf.lite.Interpreter(model_path=path_3)
 # interpreterGun.allocate_tensors()  # Needed before execution!
 # interpreterSiren.allocate_tensors()  # Needed before execution!
 # interpreterScream.allocate_tensors()  # Needed before execution!
-interpreter3.allocate_tensors()
+interpreter3.allocate_tensors()  # Needed before execution!
 
-
-
-input3=interpreter3.get_input_details()[0]
-output3=interpreter3.get_output_details()[0]
+input3=interpreter3.get_input_details()[0]  # Model has single input.
+output3=interpreter3.get_output_details()[0] # Model has double output.
 
 
 # inputGun = interpreterGun.get_input_details()[0]  # Model has single input.
@@ -79,21 +98,28 @@ output3=interpreter3.get_output_details()[0]
 
 #Load parametrers for weapons CNN
 
+#revisar script de creacion de carpeta, jic, para las siguientes dos rutas
 images_directory = "./images_cropped"
 output_directory = "./output_images"
+
 split_width = 256
 overlap_percentage = 0.6
 classes = ["arma de fuego", "no arma de fuego"]
-path_model = "model_Vgg16_60_weapons"
+path_model = ".lib/image_model/models/model_Vgg16_60_weapons"
 q = queue.Queue()
 
 
-app = Flask(__name__, static_folder='/home/khadas/Desktop/AI_cities/VIM3_Scripts/static')
+#app = Flask(__name__, static_folder='/home/khadas/Desktop/AI_cities/VIM3_Scripts/static')
+#this could be the following, or add another folder for it:
+app = Flask(__name__, static_folder='/home/khadas/INTERPERIA_SISTEMIC/static')
 
+#Banderas de soporte al script
 flag1=True
 flag2=True
 comienzo=True
 
+
+#Esto puede ir en un archivo separado como en vgg_model
 class CommandRunner:
     def __init__(self):
         self.process = None
@@ -121,49 +147,8 @@ class CommandRunner:
             self.process = None
             self.thread = None
 
-
-def run_terminal_command(command):
-    """
-    Ejecuta un comando en la terminal y espera a que termine.
-
-    Args:
-        command (str): Comando a ejecutar.
-    """
-    try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #print(result.stdout.decode())
-    except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar el comando: {e.stderr.decode()}")
-
-def extract_and_save_frame(video_path, output_image_path):
-    """
-    Extrae el primer frame de un video .mp4 y lo guarda como un archivo .png.
-
-    Args:
-        video_path (str): Ruta del archivo de video .mp4.
-        output_image_path (str): Ruta donde se guardará el frame extraído como archivo .png.
-    """
-    # Leer el video
-    reader = imageio.get_reader(video_path, 'ffmpeg')
-    
-    try:
-        # Extraer el primer frame
-        frame = reader.get_data(0)
-        
-        # Convertir el frame a una imagen PIL
-        image = Image.fromarray(frame)
-        
-        # Guardar la imagen
-        image.save(output_image_path)
-        
-        #print(f"Frame guardado exitosamente en {output_image_path}")
-    except Exception as e:
-        print(f"Error al extraer el frame: {e}")
-    finally:
-        # Cerrar el lector
-        reader.close()
-
-
+# Esto es basicamente lo mismo que esta en audio model, pero diferente porque tiene un modo de salida distinto, tal vez sea bueno ponerlo ahí
+# también pero habría que cambiarle el nombre y sha, puede ser.
 def ind_predict_ARQ4_TL(path, inputM, outputM, interpreterM):
     #print(f"Predicting for {path}")
     pre=[0,0,0,0,0,0]
@@ -223,6 +208,8 @@ def ind_predict_ARQ4_TL(path, inputM, outputM, interpreterM):
         #print(f"Event Scream detected with confidence {output_data_3[0][3]}")
     return pre
 
+#------------------------------Thread for Audio Model -------------------------------------
+
 def main_thread(q):
     try:
         print(f"\n\n----------------------Processing {audio_file} ---------------------")
@@ -242,8 +229,10 @@ def main_thread(q):
         # No hay configuración de GPIO para limpiar
         pass
 
+
+#------------------------------Thread for Image Model -------------------------------------
 def second_thread(q):
-    command = "./mipi /dev/video50"
+    command = ".lib/mipi_camera/mipi /dev/video50"
     # Ejecutar el comando de terminal
     #run_terminal_command(command)
     video_path = 'output_test.mp4'
@@ -255,18 +244,13 @@ def second_thread(q):
     discard_images(images_directory, 7.0, 0.40)
     # Ejemplo de uso
 
-
-
-    ## CAMBIAR POR OPENCV y YOLOv8 
-    ## PREGUNTAR A RICARDO
-    ## -----------------------------
-
     #waiting for model files to test
     model = torch.load(path_model, map_location=torch.device('cpu'))
     r=test_model(model, images_directory, file, output_directory, split_width, classes)
     #print("r: ",r)
 
     q.put(r)
+
 
 def REDN():
     global flag1
@@ -288,7 +272,7 @@ def REDN():
             thread1.join()
             thread2.join()
 
-            sonido=q.get()
+            sonido=q.get() #esto me hace pensar que podemos dejar el formato JSON del audio model
             armas=q.get()
             # Obtén la hora actual
             hora_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -368,7 +352,9 @@ if __name__ == '__main__':
         red_N.start()
         comienzo=False
         
-        command0="rm -rf /home/khadas/Desktop/AI_cities/VIM3_Scripts/static/mystream/*"
+        #elimina todos los archivos de static/mystream
+        #command0="rm -rf /home/khadas/Desktop/AI_cities/VIM3_Scripts/static/mystream/*"
+        command0="rm -rf /home/khadas/INTERPERIA_SISTEMIC/static/mystream/*"
         run_terminal_command(command0)
 
         command1 = "./mediamtx"
@@ -377,11 +363,16 @@ if __name__ == '__main__':
         command2 = "gst-launch-1.0 -v v4l2src device=/dev/video50 ! video/x-raw,width=1920,height=1080,framerate=30/1 ! videoconvert ! x264enc speed-preset=veryfast tune=zerolatency bitrate=800 ! rtspclientsink location=rtsp://localhost:8554/mystream "
         runner2 = CommandRunner()
 
-        command3 = "ffmpeg -i rtsp://192.168.137.25:8554/mystream -c:v copy -hls_time 2 -hls_list_size 10 -hls_flags delete_segments -start_number 1 /home/khadas/Desktop/AI_cities/VIM3_Scripts/static/mystream/index.m3u8"
+        #de este comando me preocupa esa direccion IP, ahi se indica que sale un stream, pero toca ver si esta configurada bien
+        #en especial porque arriba.en el comando 2, dice localhost, que indica que es algo local
+        #command3 = "ffmpeg -i rtsp://192.168.137.25:8554/mystream -c:v copy -hls_time 2 -hls_list_size 10 -hls_flags delete_segments -start_number 1 /home/khadas/Desktop/AI_cities/VIM3_Scripts/static/mystream/index.m3u8"
+        #tal vez esto funcione?
+        command3 = "ffmpeg -i rtsp://localhost:8554/mystream -c:v copy -hls_time 2 -hls_list_size 10 -hls_flags delete_segments -start_number 1 /home/khadas/INTERPERIA_SISTEMIC/static/mystream/index.m3u8"
+
         runner3 = CommandRunner()
-        
 
         print("en comienzo....")
+
     app.run(host='0.0.0.0', port=5000)
     print("despues")
     flag1=False

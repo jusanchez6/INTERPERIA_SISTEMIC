@@ -2,10 +2,8 @@ import smbus
 import time
 import json
 
-
 I2C_SLAVE_ADDRESS = 0x17
 I2C_BUS = 3  # Reemplaza con el número de I2C correcto
-
 
 def main():
     # Inicializar el bus I2C
