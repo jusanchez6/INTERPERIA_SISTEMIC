@@ -22,6 +22,20 @@ Al encender la Vim3, verá como se encuentra en un asistente para la instalació
 
 Siga los pasos que le indique el asistente de instalación y una vez concluya extraiga la SD de la Vim3 y reinicie la tarjeta.
 
+## Clonación del repositorio. 
+
+En el directorio raiz de su equipo abra una terminal y ejecute el sigiente comando 
+```bash
+git clone https://github.com/jusanchez6/INTERPERIA_SISTEMIC.git
+```
+
+luego de clonarlo ejecute: 
+```bash
+cd INTERPERIA_SISTEMIC/
+```
+
+Para ir a la carpeta deseada y continuar con el tutorial.
+
 
 ## Ambiente Virtual
 Se va a trabajar el ambiente virtual de Python en la carpeta de INTERPERIA SISTEMIC que se puede acceder por Github, para configurar esto, seguir lo descrito en la [documentación extra](./extras/extra_documentation.md#repositorio-de-github). Para el uso del firmware es necesario de la versión de Python 3.10.12. Para instalar Python 3.10.12 en Ubuntu, puedes utilizar el PPA de `deadsnakes`. Sigue estos pasos y recuerda estar conectado a internet:
