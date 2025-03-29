@@ -83,18 +83,28 @@ python3.10 -m venv [myenv]
 
 `[myenv]` puede ser reemplazado por el nombre del entorno virtual que se elija. 
 
-Para finalizar la preparación del ambiente virtual es necesario instalar las librerias mediante el uso de los siguientes comandos
+Para finalizar la preparación del ambiente virtual es necesario instalar las librerias mediante el uso de los siguientes comandos 3 comandos:
 
 ```bash
 source [myenv]/bin/activate
-sudo apt-get install build-essential python3-dev pkg-config libhdf5-dev
+sudo apt-get install -y python3-dev python3-pip build-essential libhdf5-dev libffi-dev
+sudo apt-get install -y gcc-aarch64-linux-gnu g++
 ```
+
 Si este segundo comando genera problemas, hacer un `sudo apt-get update` o un `sudo apt --fix-missing`. Se acaba el proceso con:
 
 ```bash
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
+
+Si al ejecutar el comando de instalación del ```requirements.txt```hay problemas, ejecute el comando:`sudo apt-get update` o `sudo apt --fix-missing`
+y reanude la instalación con:
+
+```bash
+pip install --no-cache-dir -r requirements.txt
+```
+
 Para que funcionen las librerías locales como si root fuera la carpeta `.lib` se debe escribir en `[myenv]/bin/activate` lo siguiente:
 ```bash
 export PYTHONPATH="/home/khadas/INTERPERIA_SISTEMIC/.lib"
