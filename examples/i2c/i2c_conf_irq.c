@@ -1,6 +1,25 @@
+/**
+ * @file i2c_config_irq.c
+ * @brief Archivo simple para RPP como esclavo i2c.
+ * 
+ * Configura una Raspberry Pi Pico como un dispositivo esclavo I2C.
+ * Define una memoria de 256 bytes donde el maestro puede leer o escribir datos.
+ * El código utiliza una estructura que gestiona la dirección de memoria y un manejador de eventos (i2c_slave_handler) 
+ * para procesar las operaciones de lectura y escritura. 
+ * Cuando el maestro envía datos, el esclavo los guarda en la memoria; cuando el maestro solicita datos, el esclavo los envía. 
+ * El programa se ejecuta en un bucle infinito esperando eventos I2C, manejados por interrupciones.
+ *
+ * @author Manuel Cely
+ * @author Maria del Mar A. (Docs)
+ * @date 29/03/2025
+ * @version 1.0
+ * 
+ * @copyright SISTEMIC 2025
+ */
+
 // Inclusión de librerías necesarias -> api pico : High level APIs
 #include <hardware/i2c.h>
-#include <pico/i2c_slave.h>
+#include <pico/i2c_slave.h> //recordar en CmakeList agregar pico_i2c_slave
 #include <pico/stdlib.h>
 #include <stdio.h>
 #include <string.h>

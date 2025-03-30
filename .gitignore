@@ -26,3 +26,4 @@ examples/audio_model/libarmnn.so.34
 !examples/audio_model/sample_sounds/scream_test.wav
 !examples/audio_model/sample_sounds/siren_test.wav
 !examples/image_model/sample_images/image_test.png
+!extras/i2c_docs/montaje_i2c.jpg

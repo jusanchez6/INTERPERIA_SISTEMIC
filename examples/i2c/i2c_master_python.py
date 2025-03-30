@@ -1,4 +1,23 @@
-import smbus
+##
+# @file i2c_master_python.py
+# 
+# @brief El script se conecta a la RPP mediante I2C con la dirección 0x17 y le envía un mensaje en formato ASCII.
+# Posteriormente, lee los datos desde el esclavo y los imprime en la consola.
+# El mensaje se escribe y lee en bloques de datos de un tamaño definido.
+# Este proceso se repite en un bucle continuo, con una espera de 2 segundos entre cada iteración.
+#  
+#
+# @author : Manuel Cely
+# @author : Maria del Mar A. (Docs)
+# 
+# @date: 2025-03-29
+# 
+# @version: 1.0
+# 
+# @copyright SISTEMIC 2025
+##
+
+import smbus #se requiere un pip install smbus
 import time
 import json
 

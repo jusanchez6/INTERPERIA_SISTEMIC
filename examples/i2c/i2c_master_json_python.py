@@ -1,3 +1,20 @@
+##
+# @file i2c_master_python.py
+# 
+# @brief El script se conecta a la RPP mediante I2C con la dirección 0x17 y le envía un diccionario de datos en formato JSON
+# Lee los datos enviados por el esclavo para validar la comunicación.
+#  
+#
+# @author : Manuel Cely
+# @author : Maria del Mar A. (Docs)
+# 
+# @date: 2025-03-29
+# 
+# @version: 1.0
+# 
+# @copyright SISTEMIC 2025
+##
+
 import smbus
 import time
 import json
