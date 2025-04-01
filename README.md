@@ -67,7 +67,8 @@ sudo apt install python3.10
 ```bash
 python3.10 --version
 ```
-Es importante que si en esta parte no se muestra la versión 3.10.12, se siga lo explicado en la [documentación extra](./extras/extra_documentation.md#instalación-de-python-31012) para así tener la versión correcta.
+**Es importante que si en esta parte no se muestra la versión 3.10.12, se siga lo explicado en la [documentación extra](./extras/extra_documentation.md#instalación-de-python-31012) para así tener la versión correcta.**
+
 
 Luego de la instalación de Python3.10.12 es necesario crear el ambiente virtual, mediante el comando:
 
