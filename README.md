@@ -2,15 +2,22 @@
 
 Este tutorial tiene como intención el guiar en la preparación del ambiente virtual y puesta en marcha de los diferente modelos implementados en el proyecto desde cero, asi como la actualización del firmware y posibles mejoras realizadas. 
 
+Para tutoriales o problemas que puede surgir durante la instalción y uso de este sistema dirijase a la documentación extra proporcionada.
+
 ## Tabla de Contenidos
 - [GUIA Y TUTORIAL PARA LA INSTALACION Y USO DEL SISTEMA DE DETECCION DE SONIDO E IMAGEN DEL PROYECTO SMART-CITIES](#guia-y-tutorial-para-la-instalacion-y-uso-del-sistema-de-deteccion-de-sonido-e-imagen-del-proyecto-smart-cities)
   - [Tabla de Contenidos](#tabla-de-contenidos)
   - [Instalación de la imagen de Ubuntu](#instalación-de-la-imagen-de-ubuntu)
+  - [Clonación del repositorio](#clonación-del-repositorio)
   - [Ambiente Virtual](#ambiente-virtual)
-  - [MODELOS DE IMAGEN Y AUDIO](#modelos-de-imagen-y-audio)
+  - [USO DE LOS MODELOS DE IMAGEN Y AUDIO](#uso-de-los-modelos-de-imagen-y-audio)
     - [MODELO DE AUDIO](#modelo-de-audio)
     - [Modelo de Imagen](#modelo-de-imagen)
-  - [TAREAS PENDIENTES](#tareas-pendientes)
+  - [I2C](#i2c)
+    
+   
+      
+
 
 
 ## Instalación de la imagen de Ubuntu
@@ -27,10 +34,6 @@ Siga los pasos que le indique el asistente de instalación y una vez concluya ex
 En el directorio raiz de su equipo abra una terminal y ejecute el sigiente comando 
 ```bash
 git clone https://github.com/jusanchez6/INTERPERIA_SISTEMIC.git
-```
-
-luego de clonarlo ejecute: 
-```bash
 cd INTERPERIA_SISTEMIC/
 ```
 
@@ -42,79 +45,48 @@ Se va a trabajar el ambiente virtual de Python en la carpeta de INTERPERIA SISTE
 
 ```bash
 sudo apt update
-```
-
-**Instalar las dependencias necesarias:**
-```bash
 sudo apt install software-properties-common
-```
-
-**Agregar el PPA de `deadsnakes`:**
-```bash
 sudo add-apt-repository ppa:deadsnakes/ppa
-```
-
-**Actualizar la lista de paquetes nuevamente:**
-```bash
 sudo apt update
-```
-**Instalación de Python 3.10:**
-```bash
 sudo apt install python3.10
-```
 
-**Finaliza la instalación verificando la versión con el siguiente comando:** 
-```bash
 python3.10 --version
 ```
 **Es importante que si en esta parte no se muestra la versión 3.10.12, se siga lo explicado en la [documentación extra](./extras/extra_documentation.md#instalación-de-python-31012) para así tener la versión correcta.**
 
 
-Luego de la instalación de Python3.10.12 es necesario crear el ambiente virtual, mediante el comando:
+Luego de la instalación de Python3.10.12 es necesario crear el ambiente virtual:
 
-**En primer lugar se debe instalar el paquete de entorno virtual de python3.10**
 ```bash
 sudo apt install python3.10-venv
-```
-
-**Luego de la instalación se puede ejecutar el comando:**
-```bash
 python3.10 -m venv [myenv]
+source [myenv]/bin/activate
 ```
 
-`[myenv]` puede ser reemplazado por el nombre del entorno virtual que se elija. 
+Ahora para instalar las dependencias necesarias:
 
-Para finalizar la preparación del ambiente virtual es necesario instalar las librerias mediante el uso de los siguientes comandos 3 comandos:
-
-```bash
-source [myenv]/bin/activate
+```
 sudo apt-get install -y python3-dev python3-pip build-essential libhdf5-dev libffi-dev pkg-config
 sudo apt-get install -y gcc-aarch64-linux-gnu g++
-export HDF5_DIR=/usr/lib/aarch64-linux-gnu/hdf5/serial
-```
-
-Si este segundo comando genera problemas, hacer un `sudo apt-get update` o un `sudo apt --fix-missing`. Se acaba el proceso con:
-
-```bash
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-Si al ejecutar el comando de instalación del ```requirements.txt```hay problemas, ejecute el comando:`sudo apt-get update` o `sudo apt --fix-missing`
-y reanude la instalación con:
-
+**Si encuentra algún problema en la instalación de los pquetes ejecute:**
 ```bash
+sudo apt-get update
 pip install --no-cache-dir -r requirements.txt
 ```
 
-Para que funcionen las librerías locales como si root fuera la carpeta `.lib` se debe escribir en `[myenv]/bin/activate` lo siguiente:
+Finalmente para configurar las librerias locales, escriba lo siguiente en el archivo ```[myenv]/bin/activate```
+
 ```bash
 export PYTHONPATH="/home/khadas/INTERPERIA_SISTEMIC/.lib"
 ```
-Sin esto no se encontrarán algunas librerías de manera correcta.
+**Sin esto no se encontrarán algunas librerías de manera correcta.**
 
-## MODELOS DE IMAGEN Y AUDIO
-Si se desea y su editor preferido es VS Code, se anexa un tutorial corto de su instalación en la [documentación extra](./extras/extra_documentation.md#vs-code-para-vim3).
+## USO DE LOS MODELOS DE IMAGEN Y AUDIO
+A continuación se muestra tutorial corto de su instalación en la [documentación extra](./extras/extra_documentation.md#vs-code-para-vim3).
 
 ### MODELO DE AUDIO
 Para la red de Audio, en la carpeta se encuentra el archivo ```test_model_audio.py``` el cual contiene un ejemplo de uso de la red que usa un archivo de funciones llamado ```audio_processing.py```. Entre las funciones principales se encuentran:
@@ -122,32 +94,14 @@ Para la red de Audio, en la carpeta se encuentra el archivo ```test_model_audio.
 + ```ind_predict_ARQ4_TL```: Realiza la inferencia de un modelo de detección de eventos de audio
 + ```prepare_audio```: Prepara el audio para el procesamiento
 + ```extract_features```: Extrae características de un archivo de audio usando la librería de librosa.
-El ejemplo de uso presentado en el archivo se muestra a continuación:
-```bash
 
-print(f"\n\n----------------------Processing  ---------------------")
+Para probarlo se puede hacer uso de un [micrófono USB](./extras/extra_documentation.md#configurar-micrófono-usb-para-la-lectura) y ejecute desde la carpeta de ```examples/audio_model ```:
 
-# Prepare audio file
-grabar_audio(duracion=4, nombre_archivo=filePathSave)
-
-#Comentar si se quiere probar con el archivo de prueba que esta en las variables por defecto
-audio_file=filePathSave
-
-prepare_audio(audio_file)
-
-print("----------------------Predicción Con Audio de prueba---------------------")
-a=ind_predict_ARQ4_TL(audio_file, input3, output3, interpreter3)
-print("a: ",a)
-
-```
-Para probarlo se puede hacer uso de un [micrófono USB](./extras/extra_documentation.md#configurar-micrófono-usb-para-la-lectura) para la entrada del audio si no se comenta la línea indicada, si no, se realiza con un audio que prueba incluído en la carpeta ```audio_model/sample_sounds```. Al ejecutar el siguiente comando, se podrá ver el funcionamiento del script de prueba:
 ```bash
 python3.10 test_model_audio.py
 ```
 
 ### Modelo de Imagen
-
-
 
 Para el modelo de imagen la camara requiere de una configuración previa, con el entorno virtual activado, lo primero será ejecutar los siguientes dos comandos:
 
@@ -166,127 +120,11 @@ gcc -o mipi mipi-camera.cpp -lopencv_imgproc -lopencv_core -lopencv_videoio -
 lopencv_imgcodecs -lopencv_highgui -std=c++11 -std=gnu++11 -Wall -std=c++11 -
 lstdc++ -I/usr/include/opencv4
 ```
-
-*Aunque en el repositorio se adjuntan los archivos compilados, se recomienda compilarlos para la verificación de las librerias instaladas y del correcto funcionamiento del script, además de la selección del modo de toma (multitoma, toma única).*
-
 Una vez obtenidos los ejecutables, desde el terminal se puede ejecutar el siguiente comando, el cual mostrará el funcionamiento de la cámara:
 
 ```bash
 ./mipi "/dev/video50"
 ```
-
-Este comando dependiendo del modo de funcionamiento seleccionado puede tomar varias imagenes a una tasa de 23 fps o podrá tomar una sola imagen y guardarla, a continuación se muestra los dos códigos:
-
-1. **MODO MULTITOMA**
-```c
-const int FRAME_RATE = 23; // Tasa de fotogramas deseada
-
-int main(int argc, char** argv){
-
-    if (argc != 2) {
-        cerr << "Uso: " << argv[0] << " <dispositivo>" << endl;
-        cerr << "Ejemplo: " << argv[0] << " /dev/video0" << endl;
-        return -1;
-    }
-
-    string str = argv[1];
-
-    string gstformat = "NV12";
-    string gstfile = "v4l2src device=" + str + " ! video/x-raw,format=" + gstformat + ",width=1920,height=1080,framerate=30/1 ! videoconvert ! appsink";
-    VideoCapture capture(gstfile);
-
-    if (!capture.isOpened()) {
-        cerr << "Error al abrir la camara." << endl;
-        return -1;
-    }
-
-    cout << "Iniciando captura a " << FRAME_RATE << " FPS. Presione Ctrl+C para detener." << endl;
-
-    int frame_count = 0;
-    auto frame_duration = std::chrono::milliseconds(1000 / FRAME_RATE);
-
-    while (true) {
-        auto start_time = std::chrono::high_resolution_clock::now();
-        
-        Mat frame;
-        capture >> frame;
-
-        if (frame.empty()) {
-            cerr << "No se pudo capturar el frame." << endl;
-            continue;
-        }
-
-        string filename = "current_frame.jpg";
-        bool success = imwrite(filename, frame);
-
-        if (success) {
-            cout << "Frame guardado como " << filename << endl;
-            frame_count++;
-        } else {
-            cerr << "Error al guardar el frame." << endl;
-            break;
-        }
-
-        auto end_time = std::chrono::high_resolution_clock::now();
-        auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-        
-        // Esperar el tiempo restante para alcanzar la tasa de fotogramas deseada
-        if (elapsed_time < frame_duration) {
-            std::this_thread::sleep_for(frame_duration - elapsed_time);
-        }
-    }
-
-    capture.release();
-    return 0;
-}
-```
-
-2. **MODO TOMA UNICA**
-```c
-int main(int argc, char** argv)
-{
-    if (argc != 2) {
-        cerr << "Uso: " << argv[0] << " <dispositivo>" << endl;
-        cerr << "Ejemplo: " << argv[0] << " /dev/video0" << endl;
-        return -1;
-    }
-
-    string str = argv[1];
-
-    // Configuración de GStreamer
-    string gstformat = "NV12";
-    string gstfile = "v4l2src device=" + str + " ! video/x-raw,format=" + gstformat + ",width=1920,height=1080,framerate=30/1 ! videoconvert ! appsink";
-    VideoCapture capture(gstfile);
-
-    if (!capture.isOpened()) {
-        cerr << "Error al abrir la cámara." << endl;
-        return -1;
-    }
-
-    cout << "Capturando un frame. Presione Ctrl+C para detener." << endl;
-
-    Mat frame;
-    capture >> frame;  // Captura un único frame
-
-    if (frame.empty()) {
-        cerr << "No se pudo capturar el frame." << endl;
-        return -1;
-    }
-
-    string filename = "single_frame.jpg";
-    bool success = imwrite(filename, frame);  // Guarda el frame
-
-    if (success) {
-        cout << "Frame guardado como " << filename << endl;
-    } else {
-        cerr << "Error al guardar el frame." << endl;
-    }
-
-    capture.release();  // Libera la captura
-    return 0;
-}
-```
-Para utilzar un modo o el otro basta con comentar el código no deseado y ejecutar el comando de compilación y ejecución mostrados previamente. 
 
 En el archivo `test_model.py` dentro de la carpeta de ejemplos se encuentra un script el cual prueba el modelo de inferencia de imagen de manera separada tal como se realizó con el modelo de audio. Para su ejecución es de vital importancia que el incluya las dos funciones del archivo `vgg_model.py` las cuales se incluyen mediante la línea de código:
 ```python
@@ -298,10 +136,15 @@ Si se busca hacer la descarga de este archivo mediante el terminal revisar la [d
 
 Para más información sobre el acceso al drive escriba al correo: fabian.duque@udea.edu.co
 
-## TAREAS PENDIENTES 
-- [ ] Organizar librerias en la carpeta .lib (crear la carpeta)
-- [x] Encontrar el modelo para la inferencia de las imagenes, debe ser `.pt` o `.pth`
-- [ ] Organizar la documentacion de los docstrings para que la reconozca doxygen
-- [ ] Conectar el quectel 4G
+Para el uso de este ejemplo ejecute en la carpeta ```examples/image_model ```
+```bash
+python3.10 test_model.py
+```
+## I2C
+Dentro de la documentación incluida, también se agrega documentos utilies para la instalación y uso del I2C, asi como esquemas de conexión y programación de la raspberry pi pico w. Refierase a estos archivos para la puesta en marcha de la comunicación serial con la raspberry pi pico W.
+
+
+
+
  
 
