@@ -9,10 +9,10 @@ Para tutoriales o problemas que puede surgir durante la instalción y uso de est
   - [Tabla de Contenidos](#tabla-de-contenidos)
   - [Instalación de la imagen de Ubuntu](#instalación-de-la-imagen-de-ubuntu)
   - [Clonación del repositorio](#clonación-del-repositorio)
-  - [Ambiente Virtual](#ambiente-virtual)
-  - [USO DE LOS MODELOS DE IMAGEN Y AUDIO](#uso-de-los-modelos-de-imagen-y-audio)
-    - [MODELO DE AUDIO](#modelo-de-audio)
-    - [Modelo de Imagen](#modelo-de-imagen)
+  - [Ambiente virtual](#ambiente-virtual)
+  - [Uso de los modelos de imagen y audio.](#uso-de-los-modelos-de-imagen-y-audio)
+    - [Modelo de audio](#modelo-de-audio)
+    - [Modelo de imagen](#modelo-de-imagen)
   - [I2C](#i2c)
     
    
